@@ -4,6 +4,5 @@ logs/
 .eslintrc.json
 monke.zip
 package-lock.json
-.gitignore
-.gitattributes
+gitignore
 
