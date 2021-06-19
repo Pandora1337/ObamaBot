@@ -1,0 +1,15 @@
+
+	{
+		"vietnam": {
+			"mesReact": "<:rising_storm_2:799965359384952852>"},
+		"<@&797851474309808178>": {
+			"mesReact": "<:rising_storm_2:799965359384952852>"},
+
+		"thanks obama": {
+			"mesReact": ":thumbsup_tone5:"},
+
+		"<@!280299811310272513>": {
+			"mesExec": "client.commands.get('mention').execute(message, args, client);"
+		}
+	}
+
