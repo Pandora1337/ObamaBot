@@ -6,5 +6,7 @@ package-lock.json
 gitignore
 config.json
 configLive.json
+configPublic.json
+
 
 
