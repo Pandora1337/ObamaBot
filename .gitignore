@@ -1,8 +1,10 @@
 node_modules/
-config.json
 logs/
 .eslintrc.json
 monke.zip
 package-lock.json
 gitignore
+config.json
+configLive.json
+
 
