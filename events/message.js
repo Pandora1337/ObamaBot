@@ -43,7 +43,7 @@ module.exports = {
             if (mesSent.includes('oil')){
                 message.channel.send('o_0');
             }
-            if (mesSent.includes('<@!280299811310272513>') && message.channel.type !== 'dm'){
+            if (mesSent.includes(`<@!${masterId}>`) && message.channel.type !== 'dm'){
                 client.commands.get('mention').execute(message, args, client);
                 logger.exec(`(MENTION ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
                 //console.log(chalk.green(`[MENTION ${args.join(' ')}]`), `was executed in ${message.guild.name} by ${message.author.username}!`);

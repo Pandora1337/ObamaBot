@@ -6,7 +6,7 @@ module.exports = {
     example: '',
     args: false,
     guildOnly: true,
-    masterOnly: false,
+    masterOnly: true,
     async execute(message, args){
 		message.delete()
 		

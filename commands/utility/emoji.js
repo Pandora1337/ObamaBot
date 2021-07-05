@@ -1,9 +1,9 @@
 const argAlias = ['txt', 'text', 't', 'send', 's']
 module.exports = {
     name: 'emoji',
-    description: `React with animated emojis! Also can send them in a message. No Nitro needed!`,
+    description: `React with and send animated emojis! Also can send them in a message. No Nitro needed!`,
     usage: `\`<text/list> [emoji name(s)]\`. \`<list> or leave blank\` to see all custom emojis. \`<${argAlias}>\` to send the emoji as a text`,
-    example: `catjam peped`,
+    example: `s pepedance pepeclap`,
     aliases: ['emojis', 'e', 'reaction', 'reactions'],
     guildOnly: true,
     async execute(message, args, client){
@@ -11,9 +11,10 @@ module.exports = {
 
         if(args[0] === 'list' || !args.length){
             const guildName = message.guild.name
+            var emojiMapping = message.guild.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => e.toString()+' - '+e.name+`\n`).join("")
+            if (!emojiMapping) {var emojiMapping = `Nothing here yet :(\n`}
             const emojiList = `Here are the available animated emojis from \`${guildName}\`:\n\n` +
-                message.guild.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => e.toString()+' - '+e.name+`\n`).join("") +
-				`\nYou can more by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
+                emojiMapping + `\nYou can add more by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
             message.author.send(emojiList, { split: true });
             return message.delete()
         }

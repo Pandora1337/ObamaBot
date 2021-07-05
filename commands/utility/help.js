@@ -13,7 +13,7 @@ module.exports = {
         data.push(`My prefix is \`${prefix}\`\nHere\'s a list of available commands:\n`);
         data.push(commands.filter(command => command.masterOnly === false || !command.masterOnly)
             //.filter(command => authorPerms.has(command.permissions) || authorPerms)
-            .map(command => `\`` + command.name + `\`` +` - ` + command.description).join('\n')
+            .map(command => `\`` + command.name + `\`` + ` - ` + command.description).join('\n')
         );
         //data.push(commands.map(command => `\`` + command.name + `\`` +` - ` + command.description).join('\n'));
         data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
