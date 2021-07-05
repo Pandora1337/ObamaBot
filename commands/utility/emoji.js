@@ -1,4 +1,5 @@
 const argAlias = ['txt', 'text', 't', 'send', 's']
+const {prefix} = require('../../config.json')
 module.exports = {
     name: 'emoji',
     description: `React with and send animated emojis! Also can send them in a message. No Nitro needed!`,
@@ -14,7 +15,7 @@ module.exports = {
             var emojiMapping = message.guild.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => e.toString()+' - '+e.name+`\n`).join("")
             if (!emojiMapping) {var emojiMapping = `Nothing here yet :(\n`}
             const emojiList = `Here are the available animated emojis from \`${guildName}\`:\n\n` +
-                emojiMapping + `\nYou can add more by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
+                emojiMapping + `\nProper usage: \`${prefix}e <s/t> [emoji name(s)]\` \nYou can add more emojis by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
             message.author.send(emojiList, { split: true });
             return message.delete()
         }
