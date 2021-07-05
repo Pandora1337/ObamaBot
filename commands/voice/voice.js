@@ -8,7 +8,7 @@ module.exports = {
     usage: '[audio file name] <optional channel name>',
     example: 'ugly General',
     args: false,
-    guildOnly: false,
+    guildOnly: true,
     permissions: '',
     masterOnly: false,
     async execute(message, args){
@@ -42,7 +42,7 @@ module.exports = {
             var target = message.guild.channels.cache.find(c => c.name == `${argArray}`)
         } else if (message.member.voice.channel) {
             var target = message.member.voice.channel
-        } else return message.author.send('You need to be in a voice channel on the server OR type voice channel name after the audio name!')
+        } else return message.author.send('You need to be in a voice channel on the server OR type voice channel name after the audio name (case sensetive)!')
             
         let connection = await target.join();
         let dispatcher = await connection.play(`./storage/audio/${audioFile}`,{volume:0.5});

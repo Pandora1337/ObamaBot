@@ -1,4 +1,4 @@
-const { prefix, masterId } = require('../config.json');
+const { prefix, masterId, botId } = require('../config.json');
 const Discord = require('discord.js');
 const webhook = new Discord.WebhookClient('831149756406562837','ft_cV25WOi0aJCvtnai_wDfA2WK-CZyCiDdVojLBFGWxOX5_f8SLZl_OxENQQvOiq5xG');
 const logger = require('../logger.js');
@@ -48,7 +48,7 @@ module.exports = {
                 logger.exec(`(MENTION ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
                 //console.log(chalk.green(`[MENTION ${args.join(' ')}]`), `was executed in ${message.guild.name} by ${message.author.username}!`);
             }
-			if (mesSent.includes('<@!645586106838155264>')){ //826106135689560084 for obama
+			if (mesSent.includes(`<@!${botId}>`)){
 				//message.author.send(`My prefix is \`${prefix}\`, for the list of commands, type \`${prefix}help\``)
                 client.commands.get('help').execute(message, args, client);
 			}return
