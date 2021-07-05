@@ -15,12 +15,16 @@ module.exports = {
         
     message.delete();
 
+    function getAudio() {
+        const files = fs.readdirSync('./storage/audio/', { withFileTypes: true })
+            .filter(dirent => dirent.isFile())
+            .map(dirent => dirent.name.split('.').slice(0,-1))
+        const list = 'Here are the audio files you can play:\n\n' + files.join('\n') + `\n\nProper usage: \`${prefix}v [audio file] <optional voice channel>\``
+        return list
+    }
+
         if (!args.length) { // Gets a list of audio files
-            const files = fs.readdirSync('./storage/audio/', { withFileTypes: true })
-                .filter(dirent => dirent.isFile())
-                .map(dirent => dirent.name.split('.').slice(0,-1))
-            const list = 'Here are the audio files you can play:\n\n' + files.join('\n') + `\n\nProper usage: \`${prefix}v [audio file] <optional voice channel>\``
-            return message.author.send(list)
+            return message.author.send(getAudio())
         }
 
         const Folder = fs.readdirSync('./storage/audio/')
@@ -35,6 +39,8 @@ module.exports = {
                 var  audioFile = args[0] + '.' + fileExt
             }
         }
+
+        if (!audioFile) return message.author.send(getAudio())
     
         if (args[1]) {var argArray = args.slice(1).join(' ')}
 
