@@ -27,7 +27,7 @@ module.exports = {
             .map(quiz =>  /*${quiz.name.split('.').slice(0,-1)}*/`\`${quiz.name}\` - ${quiz.description} by ${quiz.author}`)
         const list2 = 'Here are the quizes you can play:\n\n' + files2.join('\n') + `\n\nProper usage: \`${prefix}q [quiz name]\``
         
-        if (!args.length) { return message.author.send(list2) }
+        if (!args.length) { return message.channed.send(list2) }
 
         if (client.quizes.some(a => a.name === args[0] == true)) return client.quizes.get(args[0]).execute(message)
     }
