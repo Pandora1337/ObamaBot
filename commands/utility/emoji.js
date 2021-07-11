@@ -21,7 +21,7 @@ module.exports = {
         }
 		
         if(args[0] === 'all'){
-            const guildName = message.guild.name
+            //const guildName = message.guild.name
             const emojiList = `Here are all the available animated emojis:\n\n` +
                 client.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => e.toString()+' - '+e.name+`\n`).join("") +
 				`\nYou can more by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;

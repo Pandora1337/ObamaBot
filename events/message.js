@@ -81,15 +81,15 @@ module.exports = {
       try {
         command.execute(message, args, client);
         try {
-            logger.exec(`(${commandName} ${args}) was executed in ${message.guild.name} by ${message.author.tag}!`)
+            logger.exec(`(${commandName} ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
             //console.log(chalk.green(`[${commandName} ${args.join(' ')}]`), ` was executed in ${message.guild.name} by ${message.author.username}!`);
         } 
         catch (error) {
-            logger.exec(`(${commandName} ${args}) was executed in DM with ${message.author.tag}!`);
+            logger.exec(`(${commandName} ${args.join(' ')}) was executed in DM with ${message.author.tag}!`);
             //console.log(chalk.green(`[${commandName} ${args}]`), ` was executed in DM with ${message.author.username}!`);
         }
     } catch (error) {
-        logger.error(`Error has occured while executing ${commandName} ${args}`)
+        logger.error(`Error has occured while executing ${commandName} ${args.join(' ')}`)
         logger.error(error)
         //console.log(chalk.redBright(`Error occured while executing a command!`))
         //console.error(error);

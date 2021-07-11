@@ -15,7 +15,7 @@ module.exports = {
 	        || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
         const commandFolders = fs.readdirSync('./commands'); // this is for subfolder search
-		const folderName = commandFolders.find(folder => fs.readdirSync(`./commands/${folder}`).includes(`${commandName}.js`));
+		const folderName = commandFolders.find(folder => fs.readdirSync(`./commands/${folder}`).includes(`${command.name}.js`));
 
         if (!command) {
             const commandNew = require(`../${folderName}/${commandName}.js`);

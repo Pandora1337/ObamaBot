@@ -23,8 +23,8 @@ module.exports = {
                 if (message.channel.type !== 'dm') return message.reply('I\'ve sent you a DM with available commands!');
             })
             .catch(error => {
-                console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
+                logger.error(`Could not send help DM to ${message.author.tag}.\n`, error);
+                message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
             });
         }
 
