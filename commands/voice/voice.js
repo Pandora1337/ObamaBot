@@ -1,5 +1,6 @@
 var fs = require('fs');
 const { prefix } = require('../../config.json')
+const {MessageEmbed} = require('discord.js')
 
 module.exports = {
     name: 'voice',
@@ -16,11 +17,20 @@ module.exports = {
     message.delete();
 
     function getAudio() {
+
         const files = fs.readdirSync('./storage/audio/', { withFileTypes: true })
             .filter(dirent => dirent.isFile())
             .map(dirent => dirent.name.split('.').slice(0,-1))
-        const list = 'Here are the audio files you can play:\n\n' + files.join('\n') + `\n\nProper usage: \`${prefix}v [audio file] <optional voice channel>\``
-        return list
+        // const list = 'Here are the audio files you can play:\n\n' + files.join('\n') + `\n\nProper usage: \`${prefix}v [audio file] <optional voice channel>\``
+        
+        const embed = new MessageEmbed()
+            .setColor('#992E89')
+            .setTitle('Here are the audio files you can play:')
+            .setDescription(files.join('\n'))
+            //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
+            .setFooter(`Proper usage:  ${prefix}v [audio file]  <optional voice channel>`);
+        
+        return embed
     }
 
         if (!args.length) { // Gets a list of audio files
