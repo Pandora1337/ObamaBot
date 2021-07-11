@@ -1,6 +1,6 @@
 module.exports = {
     name: 'prune',
-    description: 'Deletes a specified number of messages from the channel! (if you have the right permission)',
+    description: 'Deletes a specified number of messages from the channel! (if you have the right permission!)',
     guildOnly: true,
 	permissions: 'MANAGE_MESSAGES',
 	masterOnly: false,
