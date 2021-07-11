@@ -24,9 +24,10 @@ module.exports = {
         context.fillStyle = 'black';
         context.fillText(`Monke Results`, 140, 85);
 
-        context.font = '25px sans-serif';
-        context.fillText(`Closest ideology match: `+ ideology, 150, 120);
+        context.font = '22px sans-serif';
+        context.fillText(`Closest ideology match: `+ ideology, 140, 120);
 
+        context.font = '25px sans-serif';
         context.fillText(`Economic axis: ` + economiclabel, 180, 152);
         context.fillText(`Diplomatic axis: ` + diplomaticlabel, 180, 260);
         context.fillText(`Civil axis: ` + statelabel, 180, 362);

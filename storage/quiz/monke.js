@@ -91,9 +91,9 @@ module.exports = {
             }
         }
         function prev_question() {
-            if (prev_answer == null) {
-                init_question();
-            }
+            if (prev_answer == null) return init_question();
+            if (qn == 0) return init_question();
+
             qn--;
             econ -= prev_answer * questions[qn].effect.econ;
             dipl -= prev_answer * questions[qn].effect.dipl;
