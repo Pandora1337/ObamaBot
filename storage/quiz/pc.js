@@ -108,11 +108,12 @@ module.exports = {
         // Previous question
     
         function prev_question() {
-            if (jQuery.isEmptyObject(answers)) return
+            if (qn == 0) return init_question()
+
             qn--;
     
             delete answers[questionsOrder[qn]];
-    
+            
             init_question();
         }
     
