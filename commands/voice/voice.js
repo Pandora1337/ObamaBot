@@ -24,7 +24,7 @@ module.exports = {
         // const list = 'Here are the audio files you can play:\n\n' + files.join('\n') + `\n\nProper usage: \`${prefix}v [audio file] <optional voice channel>\``
         
         const embed = new MessageEmbed()
-            .setColor('#992E89')
+            .setColor('#b06dad ')
             .setTitle('Here are the audio files you can play:')
             .setDescription(files.join('\n'))
             //.setThumbnail('https://i.imgur.com/wSTFkRM.png')

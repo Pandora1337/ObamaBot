@@ -28,7 +28,7 @@ module.exports = {
         // const list2 = 'Here are the quizes you can play:\n\n' + files2.join('\n') + `\n\nProper usage: \`${prefix}q [quiz name]\``
 
         const embed = new MessageEmbed()
-            .setColor('#0099ff')
+            .setColor('#35b1c9')
             .setTitle('Here are the quizzes you can play:')
             .setDescription(files2.join('\n'))
             //.setThumbnail('https://i.imgur.com/wSTFkRM.png')

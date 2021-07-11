@@ -98,6 +98,7 @@ module.exports = {
             qn++;
     
             if (qn < questionsOrder.length) {
+                results()
                 init_question();
             } else {
                 results();

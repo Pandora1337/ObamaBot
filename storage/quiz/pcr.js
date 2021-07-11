@@ -42,15 +42,15 @@ module.exports = {
         ctx.font="50px sans-serif"
         ctx.textAlign="center"
         ctx.fillStyle="#222222"
-        ctx.fillText("Left / Right Axis (x): " + x_axis, 1125+430, 1375-1250) //1375
-        ctx.fillText("Auth / Lib Axis (y): " + y_axis, 1125+430, 1450-1250) //1450
-        ctx.fillText("Prog / Con Axis (z): " + z_axis, 1125+430, 1525-1250) //1525
+        ctx.fillText("Left / Right Axis (x): " + x_axis, 1125+420, 1375-1250) //1375
+        ctx.fillText("Auth / Lib Axis (y): " + y_axis, 1125+420, 1450-1250) //1450
+        ctx.fillText("Prog / Con Axis (z): " + z_axis, 1125+420, 1525-1250) //1525
         
         ctx.textAlign="left"    
         ctx.font = '70px sans-serif';
         ctx.fillStyle = 'black';
         ctx.fillText(`${message.author.username}\'s`, 400, 180);// name
-        ctx.font = '75px sans-serif';
+        ctx.font = '70px sans-serif';
         ctx.fillStyle = 'black';
         ctx.fillText(`Political Compass Results`, 400, 200+60);
 

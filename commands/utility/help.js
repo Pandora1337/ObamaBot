@@ -18,7 +18,7 @@ module.exports = {
                 .map(command => `\`` + command.name + `\`` + ` - ` + command.description)
 
             const embed = new MessageEmbed()
-                .setColor('#00da00')
+                .setColor('#badf55 ')
                 .setTitle('Here\'s a list of my commands:')
                 .setDescription(`My prefix is \`${prefix}\`!\n\n${files.join('\n\n')}`)
                 .setThumbnail('https://image.cnbcfm.com/api/v1/image/104656161-GettyImages-688156110.jpg?v=1532563778')
@@ -61,7 +61,7 @@ module.exports = {
         if (command.example) data.push(`**Example:** \`${prefix}${command.name} ${command.example}\`\n`);
 
         const helpCommand = new MessageEmbed()
-            .setColor('#FFFF00')
+            .setColor('#ebc83d')
             .setTitle(`Extra info on \`${command.name}\``)
             .setDescription(data)
 

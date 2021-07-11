@@ -19,7 +19,6 @@ module.exports = {
         client.user.setPresence({ activity: { name: a, type: aType }})
         fs.writeFile('./config.json', JSON.stringify(conf, null, 2), 'utf8',function writeJSON(err) {
             if (err) return console.log(err);
-            console.log(JSON.stringify(conf));
           });
 
         return message.channel.send(`Status set to \`${aType} ${a}\`!`)
