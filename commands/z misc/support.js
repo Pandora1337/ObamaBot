@@ -1,9 +1,9 @@
 module.exports = {
     name: 'support',
     description: 'Sends you the invite to Obama\'s server for bot support, suggestions, or general questions!',
-    aliases: [''],
-    usage: '',
+    usage: ' ',
     example: '',
+    emoji: '🙋',
     args: false,
     guildOnly: false,
     permissions: '',
