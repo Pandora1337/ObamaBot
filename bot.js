@@ -3,8 +3,21 @@ const Discord = require('discord.js');
 const { TOKEN } = require('./config.json');
 
 const client = new Discord.Client();
+require("discord-buttons")(client);
 
+//quizzes collection
+client.quizes = new Discord.Collection();
 
+const Folder = fs.readdirSync('./storage/quiz/')
+
+for (const file of Folder) {
+    if (file.endsWith('.js')) {
+        const quiz = require(`./storage/quiz/${file}`);
+        client.quizes.set(quiz.name, quiz);
+    }
+}
+
+//events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
@@ -16,9 +29,9 @@ for (const file of eventFiles) {
     }
 }
 
-client.commands = new Discord.Collection();
 
-//const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+//commands collection
+client.commands = new Discord.Collection();
 
 const commandFolders = fs.readdirSync('./commands');
 
