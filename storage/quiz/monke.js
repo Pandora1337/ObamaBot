@@ -2,7 +2,7 @@ const Math = require('mathjs');
 const Discord = require('discord.js')
 const questions = require('../../storage/quiz/monkeq.json')
 const ideologies = require('../../storage/quiz/monkei.json')
-const monkeresult = require('../../storage/quiz/monkeresult.js')
+const monkeresult = require('../../storage/quiz/monker.js')
 
 module.exports = {
     name: 'monke',
