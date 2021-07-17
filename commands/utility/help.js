@@ -21,11 +21,7 @@ module.exports = {
                 .map(command => `\`` + command.name + `\`` + ` - ` + command.description)
 
             const embed = new MessageEmbed()
-<<<<<<< Updated upstream
                 .setColor('#FFA500 ')
-=======
-                .setColor('#badf55')
->>>>>>> Stashed changes
                 .setTitle('Here\'s a list of my commands:')
                 .setDescription(`${files.join('\n\n')}`)
                 .setThumbnail('https://image.cnbcfm.com/api/v1/image/104656161-GettyImages-688156110.jpg?v=1532563778')
