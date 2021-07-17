@@ -1,5 +1,6 @@
 const fs = require('fs');
 const conf = require('../../config.json');
+
 module.exports = {
     name: 'presence',
     description: 'Changes the presence activity of the bot',
@@ -17,7 +18,7 @@ module.exports = {
         conf.ACTIVITY = a
 
         client.user.setPresence({ activity: { name: a, type: aType }})
-        fs.writeFile('./config.json', JSON.stringify(conf, null, 2), 'utf8',function writeJSON(err) {
+        fs.writeFile('./config.json', JSON.stringify(conf, null, 2), 'utf8', function writeJSON(err) {
             if (err) return console.log(err);
           });
 
