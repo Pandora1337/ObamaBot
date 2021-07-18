@@ -1,7 +1,7 @@
 module.exports = {
     name: 'pretend',
     description: 'send msg as obama',
-    aliases: ['p'],
+    aliases: [''],
     usage: '',
     example: '',
     args: false,
@@ -21,6 +21,7 @@ module.exports = {
 		if (user) {
             const m = user.send(args.slice(1).join(' '))
 
+            /*
             .then(m => {
                 m.channel.awaitMessages(filter, { max: 50, time: 60000 * 1, errors: ['time'] })
                 .then(collected => {
@@ -30,7 +31,7 @@ module.exports = {
                     message.author.send('------------------------------------');
                 });
             })
-            
+            */
            
         }
         
