@@ -6,7 +6,6 @@ module.exports = {
     description: `React with and send animated emojis! Also can send them in a message. No Nitro needed!`,
     usage: `<t/s> [emoji name(s)]\`. \`<list> or leave blank\` to see animated emojis. \`<${argAlias}>\` to send the emoji as a message.\\`,
     example: 's pepedance pepeclap',
-    emoji: '😊',
     aliases: ['e', 'emojis', 'reaction', 'reactions'],
     guildOnly: true,
     async execute(message, args, client){

@@ -1,11 +1,6 @@
 module.exports = {
     name: 'prune',
     description: 'Deletes a specified number of messages from the channel! (if you have the right permission!)',
-    aliases: ['p'],
-	usage: '[number of messages to delete]',
-    //emoji: '✂️',
-    emoji: '',
-	example: '1',
     guildOnly: true,
 	permissions: 'MANAGE_MESSAGES',
 	masterOnly: false,
@@ -20,7 +15,7 @@ module.exports = {
 
 		message.channel.bulkDelete(amount, true).catch(err => {
 			console.error(err);
-			message.channel.send('There was an error trying to prune messages in this channel! Do I have the appropriate permission?');
+			message.channel.send('there was an error trying to prune messages in this channel!');
 		});
     }
 }

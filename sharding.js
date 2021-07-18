@@ -1,4 +1,4 @@
-const { TOKEN } = require('./config.json');
+const TOKEN = process.env.dupersecret;
 const { ShardingManager } = require('discord.js');
 const manager = new ShardingManager('./bot.js', { token: `${TOKEN}`, totalShards: 'auto' });
 const logger = require('../logger');

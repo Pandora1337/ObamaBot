@@ -5,14 +5,12 @@ const result = require('../../storage/quiz/pcr.js')
 
 module.exports = {
     name: 'pc',
-    longName: 'Political Compass',
     description: 'Political compass test!',
     author: 'SapplyValues',
-    emoji: '🧭',
     isQuiz: true,
     guildOnly: false,
     masterOnly: false,
-    async execute(message, author){
+    async execute(message){
         // variables
         var answers = new Object();     // Store user's answers
         var qn = 0; // Current question order
@@ -85,19 +83,19 @@ module.exports = {
             msg.edit(exampleEmbed)
 
 
-            const filter = (reaction, user) => EmojiArray.includes(reaction.emoji.name) && user.id === author.id
+            const filter = (reaction, user) => EmojiArray.includes(reaction.emoji.name) && user.id === message.author.id
             
             const collector = msg.createReactionCollector(filter, { max: 1, time: 60000*5, errors: ['time'] })
 
-            collector.on('collect', async (reaction, user) => {
-                if (reaction.emoji.name === EmojiArray[0]) { next_question(1.0) }
-                if (reaction.emoji.name === EmojiArray[1]) { next_question(0.5) }
-                if (reaction.emoji.name === EmojiArray[2]) { next_question(0.0) }
-                if (reaction.emoji.name === EmojiArray[3]) { next_question(-0.5) }
-                if (reaction.emoji.name === EmojiArray[4]) { next_question(-1.0) }
-                if (reaction.emoji.name === EmojiArray[5]) { prev_question() }
+            collector.on('collect', (reaction, user) => {
+                if (message.channel.type !== 'dm') {reaction.users.remove(user.id)}
                 
-                if (message.channel.type !== 'dm') { reaction.users.remove(user.id) }
+                if (reaction.emoji.name === EmojiArray[0]) {next_question(1.0)}
+                if (reaction.emoji.name === EmojiArray[1]) {next_question(0.5)}
+                if (reaction.emoji.name === EmojiArray[2]) {next_question(0.0)}
+                if (reaction.emoji.name === EmojiArray[3]) {next_question(-0.5)}
+                if (reaction.emoji.name === EmojiArray[4]) {next_question(-1.0)}
+                if (reaction.emoji.name === EmojiArray[5])  prev_question()
             });
 
             collector.on('end', (collection, reason) => {
@@ -106,7 +104,6 @@ module.exports = {
                     const emptyEmbed = new Discord.MessageEmbed()
                         .setColor('#FF0000')
                         .setTitle('Quiz timed out!')
-                        .setDescription('Try \`quiz\` command again!');
                     msg.edit(emptyEmbed)
                 }
             })
@@ -143,7 +140,7 @@ module.exports = {
     
         // RESULTS
     
-        async function results() {
+        function results() {
             var right = 0
             var auth = 0
             var prog = 0
@@ -165,9 +162,8 @@ module.exports = {
                     args += '&'
                 }*/
             }
-            await msg.delete()
-            await result.execute(message, author, right, auth, prog)
-            //await message.channel.send(result.execute(message, author, right, auth, prog))
+             result.execute(message, right, auth, prog)
+                .then(msg.delete())
         }
     
     

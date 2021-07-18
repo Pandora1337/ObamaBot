@@ -1,23 +1,16 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { TOKEN } = require('./config.json');
 
 const client = new Discord.Client();
-require("discord-buttons")(client);
 
-//quizzes collection
-client.quizes = new Discord.Collection();
 
-const Folder = fs.readdirSync('./storage/quiz/')
+/*
+client.on('ready', () => logger.log('info', 'The bot is online!'));
+client.on('debug', m => logger.log('debug', m));
+client.on('warn', m => logger.log('warn', m));
+client.on('error', m => logger.log('error', m));
+*/
 
-for (const file of Folder) {
-    if (file.endsWith('.js')) {
-        const quiz = require(`./storage/quiz/${file}`);
-        client.quizes.set(quiz.name, quiz);
-    }
-}
-
-//events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
@@ -29,9 +22,9 @@ for (const file of eventFiles) {
     }
 }
 
-
-//commands collection
 client.commands = new Discord.Collection();
+
+//const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 const commandFolders = fs.readdirSync('./commands');
 
@@ -43,4 +36,4 @@ for (const folder of commandFolders) {
     }
 }
 
-client.login(TOKEN);
+client.login(process.env.dupersecret);

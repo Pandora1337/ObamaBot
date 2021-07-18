@@ -2,16 +2,13 @@ const Canvas = require('canvas');
 const Discord = require('discord.js')
 
 module.exports = {
-    name: 'pcr',
+    name: 'can2',
     description: 'canvas test2!',
-    aliases: [''],
-    usage: '',
-    example: '',
     args: false,
     guildOnly: false,
     permissions: '',
     masterOnly: true,
-    async execute(message, author, right, auth, prog){
+    async execute(message, right, auth, prog){
         
         x_axis  = parseFloat(right)
         y_axis  = parseFloat(auth)
@@ -21,7 +18,7 @@ module.exports = {
         var ctx = canvas.getContext("2d");
         ctx.fillStyle = "#EEEEEE"
         ctx.fillRect(0, 0, 1850, 1600);
-        const background = await Canvas.loadImage('./storage/quiz/pc.png')
+        const background = await Canvas.loadImage('./storage/quiz/compass.png')
         ctx.drawImage(background, 0, 300);
     
         var dot = canvas.getContext("2d");
@@ -49,7 +46,7 @@ module.exports = {
         ctx.textAlign="left"    
         ctx.font = '70px sans-serif';
         ctx.fillStyle = 'black';
-        ctx.fillText(`${author.username}\'s`, 400, 180);// name
+        ctx.fillText(`${message.author.username}\'s`, 400, 180);// name
         ctx.font = '60px sans-serif';
         ctx.fillStyle = 'black';
         ctx.fillText(`Political Compass Results`, 400, 200+60);
@@ -64,7 +61,7 @@ module.exports = {
         ctx.strokeStyle = 'black';
         ctx.stroke();
 
-        const avatar = await Canvas.loadImage(author.displayAvatarURL({ format: 'jpg' }));
+        const avatar = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg' }));
 
         ctx.beginPath(); //circular window to the avatar
         ctx.arc(200, 200, 150, 0, Math.PI * 2, true);
@@ -73,9 +70,7 @@ module.exports = {
         
         ctx.drawImage(avatar, 50, 50, 300, 300);
     
-	    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `${author.username}-politcompass.png`);
-
+	    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `${message.author.username}-politcompass.png`);
         message.channel.send(attachment)
-        //return await attachment
     }
 }
