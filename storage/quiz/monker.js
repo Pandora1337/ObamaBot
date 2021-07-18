@@ -1,25 +1,26 @@
 const Canvas = require('canvas');
-const Discord = require('discord.js')
+const {MessageAttachment} = require('discord.js')
 
 module.exports = {
-    async execute(message, economiclabel, diplomaticlabel, statelabel, societylabel, ideology){
-        /*
-        const economiclabel = `ok`
-        const diplomaticlabel = `yuk`
-        const statelabel = `huh`
-        const societylabel = `bru`
-        const ideology = `monk`
-        */
+    name: 'monker',
+    async execute(message, author, economiclabel, diplomaticlabel, statelabel, societylabel, ideology) {//, equality, might, liberty, tradition, wealth, peace, authority, progress){
        
+        /*
+        wealth = (100 - equality).toFixed(1)
+        might = (100 - peace).toFixed(1)
+        authority = (100 - liberty).toFixed(1)
+        tradition = (100 - progress).toFixed(1)
+        */
+
         const canvas = Canvas.createCanvas(700, 570);
         const context = canvas.getContext('2d');
-        const background = await Canvas.loadImage('./storage/quiz/monkeresults2.png');
+        const background = await Canvas.loadImage('./storage/quiz/monke.png');
         context.drawImage(background, 0, 0, canvas.width, canvas.height);
 
 
         context.font = '30px sans-serif';
         context.fillStyle = 'black';
-        context.fillText(`${message.author.username}\'s`, 140, 50);// name
+        context.fillText(`${author.username}\'s`, 140, 50);// name
         context.font = '40px sans-serif';
         context.fillStyle = 'black';
         context.fillText(`Monke Results`, 140, 85);
@@ -33,6 +34,7 @@ module.exports = {
         context.fillText(`Civil axis: ` + statelabel, 180, 362);
         context.fillText(`Societal axis: ` + societylabel, 180, 472);
 
+        
     
         context.fillStyle="#f44336"
         context.fillRect(106, 163, 4.92*equality+1, 63)
@@ -75,7 +77,7 @@ module.exports = {
         context.strokeStyle = 'black';
         context.stroke();
 
-        const avatar = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg' }));
+        const avatar = await Canvas.loadImage(author.displayAvatarURL({ format: 'jpg' }));
 
         context.beginPath();
         context.arc(70, 70, 50, 0, Math.PI * 2, true);
@@ -85,9 +87,10 @@ module.exports = {
         context.drawImage(avatar, 20, 20, 100, 100);
 
 
-	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `Monke-${message.author.username}.png`);
+	const attachment = new MessageAttachment(canvas.toBuffer(), `Monke-${author.username}.png`)
 
-	message.channel.send(attachment);
+	return message.channel.send(attachment);
+    //return await attachment
 
     }
 }
