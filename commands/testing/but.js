@@ -1,7 +1,8 @@
-const { MessageButton, MessageActionRow, MessageMenuOption, MessageMenu } = require('discord-buttons');
+const disbut = require("discord-buttons");
+
 module.exports = {
     name: 'but',
-    description: 'button!',
+    description: 'buttons?!',
     aliases: [''],
     usage: '',
     example: '',
@@ -9,35 +10,28 @@ module.exports = {
     guildOnly: false,
     permissions: '',
     masterOnly: true,
-    async execute(message, args, client) {
+    execute(message, args, client){
 
-        let option = new MessageMenuOption()
-            .setLabel('Your Label')
-            //.setEmoji('🍔')
-            .setValue('menuid')
-            .setDescription('Custom Description!');
+    let button = new disbut.MessageButton()
+        .setLabel("This is a button!")
+        .setID("myid")
+        .setStyle("blurple");
 
-        let option2 = new MessageMenuOption()
-            .setLabel('command2')
-            .setValue('menuid2')
-            .setDescription('another help thing');
 
-        let select = new MessageMenu()
-            .setID('customid')
-            .setPlaceholder('Click me! :D')
-            .addOptions(option, option2)
-            .setMaxValues(1)
-            .setMinValues(0);
+    let option = new disbut.MessageMenuOption()
+        .setLabel('Your Label')
+        .setEmoji('🍔')
+        .setValue('menuid')
+        .setDescription('Custom Description!')
+        
+    let select = new disbut.MessageMenu()
+        .setID('customid')
+        .setPlaceholder('Click me! :D')
+        .setMaxValues(1)
+        .setMinValues(1)
+        .addOption(option)
 
-        message.channel.send('Text with menu!', select);
-
-        client.on('clickMenu', async (menu) => {
-              if (menu.values[0] == 'menuid') {
-                await menu.reply.send('bruv')
-            } if (menu.values[0] == 'menuid2') {
-                await menu.reply.send('lol hat')
-            }
-        })
+        message.channel.send(`bruh`, button);
 
     }
 }
