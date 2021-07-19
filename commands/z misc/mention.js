@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'mention',
-    description: 'Obama himself DMs Pandora with a provided message.',
+    description: 'sends a DM to bot owner when mentioned on a server',
     guildOnly: true,
 	masterOnly: true,
     execute(message, args, client){

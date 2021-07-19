@@ -1,15 +1,15 @@
 module.exports = {
     name: 'pretend',
     description: 'send msg as obama',
-    aliases: [''],
-    usage: '',
-    example: '',
+    aliases: ['msg'],
+    usage: ' <@user> hello',
+    example: 'hey Obama here',
     args: false,
     guildOnly: false,
     permissions: '',
     masterOnly: true,
     execute(message, args, client){
-        const filter = m => m.content.length > 0;
+        //const filter = m => m.content.length > 0;
 
 		const user = getUserFromMention(args[0]);
         message.delete()

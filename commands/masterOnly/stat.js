@@ -2,7 +2,7 @@ const { ShardClientUtil } = require('discord.js');
 const logger = require('../../logger');
 module.exports = {
     name: 'stat',
-    description: 'stats for the bot',
+    description: 'stats for the bot, except it doesnt work',
     aliases: ['stats'],
     usage: '',
     example: '',
@@ -24,9 +24,8 @@ module.exports = {
             const totalShards = ShardClientUtil.count
             return message.channel.send(`Server count: ${totalGuilds}\nMember count: ${totalMembers}\nShard count: ${totalShards}`);
         })
-        .catch(
+        .catch(err)
             //console.error
-            logger.error(error)
-            );
+            //logger.error(error)
     }
 }
