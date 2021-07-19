@@ -54,7 +54,6 @@ module.exports = {
             return color;
         }
 
-
         function init_question() {
 
             const exampleEmbed = new Discord.MessageEmbed(qEmbed)
@@ -70,14 +69,14 @@ module.exports = {
 
             collector.on('collect', async (reaction, user) => {
 
+                if (message.channel.type !== 'dm') { reaction.users.remove(user.id) }
+
                 if (reaction.emoji.name === EmojiArray[0]) { next_question(1.0) }
                 if (reaction.emoji.name === EmojiArray[1]) { next_question(0.5) }
                 if (reaction.emoji.name === EmojiArray[2]) { next_question(0.0) }
                 if (reaction.emoji.name === EmojiArray[3]) { next_question(-0.5) }
                 if (reaction.emoji.name === EmojiArray[4]) { next_question(-1.0) }
                 if (reaction.emoji.name === EmojiArray[5]) { prev_question() }
-                
-                if (message.channel.type !== 'dm') { reaction.users.remove(user.id) }
             });
 
             collector.on('end', (collection, reason) => {
