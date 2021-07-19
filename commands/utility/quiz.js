@@ -32,8 +32,8 @@ module.exports = {
 
         });
 
-        if (client.quizes.some(a => a.name === args[0] == true && a.isQuiz == true)) return client.quizes.get(args[0]).execute(message);
-        else {var msg = message.channel.send('Select the quiz you want to play from the menu!\n', quizmenu);}
+        if (client.quizes.some(a => a.name === args[0] == true && a.isQuiz == true)) return client.quizes.get(args[0]).execute(message, message.author);
+        else {message.channel.send('Select the quiz you want to play from the menu!\n', quizmenu);}
 
         client.on('clickMenu', async (menu) => {
             if (menu.id != 'quizmenu') return;

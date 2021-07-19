@@ -7,7 +7,7 @@ module.exports = {
     name: 'help',
     description: `Lists all my commands with a cool new menu!`,
     aliases: ['h', 'list', 'commands'],
-    emoji: '❓',
+    emoji: '❔',
     usage: '<optional command name>',
     execute(message, args, client) {
 
@@ -70,6 +70,7 @@ module.exports = {
             }
 
             const name = args[0].toLowerCase();
+            const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
             if (!command) { return message.reply('That\'s not a valid command!') }
             return message.channel.send(getHelp(name))
