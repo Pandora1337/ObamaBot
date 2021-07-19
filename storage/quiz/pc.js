@@ -92,7 +92,7 @@ module.exports = {
             collector.on('collect', async (reaction, user) => {
                 
                 if (message.channel.type !== 'dm') { reaction.users.remove(user.id) }
-                
+
                 if (reaction.emoji.name === EmojiArray[0]) { next_question(1.0) }
                 if (reaction.emoji.name === EmojiArray[1]) { next_question(0.5) }
                 if (reaction.emoji.name === EmojiArray[2]) { next_question(0.0) }
@@ -166,6 +166,7 @@ module.exports = {
                     args += '&'
                 }*/
             }
+            
             await msg.delete()
             await result.execute(message, author, right, auth, prog)
             //await message.channel.send(result.execute(message, author, right, auth, prog))
