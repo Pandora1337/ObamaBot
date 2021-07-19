@@ -35,21 +35,30 @@ module.exports = {
         context.fillText(`Societal axis: ` + societylabel, 180, 472);
 
         
-    
+        context.strokeStyle = "black"
+        context.lineWidth = 4;
+
         context.fillStyle="#f44336"
-        context.fillRect(106, 163, 4.92*equality+1, 63)
+        context.strokeRect(108, 163, 4.92*equality, 63);
+        context.fillRect(107, 163, 4.92*equality+1, 63)
         //context.fillStyle="#00897b"
         //context.fillRect(682-5.6*wealth, 184, 5.6*wealth-2, 72)
+
         context.fillStyle="#ff9800"
-        context.fillRect(106, 268, 4.92*might+1, 64)
+        context.strokeRect(108, 268, 4.92*might, 64);
+        context.fillRect(107, 268, 4.92*might+1, 64)
         //context.fillStyle="#03a9f4"
         //context.fillRect(682-5.6*peace, 304, 5.6*peace-2, 72)
+
         context.fillStyle="#ffeb3b"
-        context.fillRect(106, 374, 4.92*liberty+1, 64)
+        context.strokeRect(108, 374, 4.92*liberty, 64);
+        context.fillRect(107, 374, 4.92*liberty+1, 64)
         //context.fillStyle="#3f51b5"
         //context.fillRect(682-5.6*authority, 424, 5.6*authority-2, 72)
+
         context.fillStyle="#8bc34a"
-        context.fillRect(106, 480, 4.92*tradition+1, 63)
+        context.strokeRect(108, 480, 4.92*tradition, 64);
+        context.fillRect(107, 480, 4.92*tradition+1, 64)
         //context.fillStyle="#9c27b0"
         //context.fillRect(682-5.6*progress, 544, 5.6*progress-2, 72)
 
