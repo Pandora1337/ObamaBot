@@ -1,7 +1,7 @@
 const { prefix } = require('../../config.json');
 const logger = require('../../logger.js');
 const { MessageEmbed } = require('discord.js')
-const { MessageMenuOption, MessageMenu } = require('discord-buttons');
+const { MessageMenuOption, MessageMenu, MenuCollector } = require('discord-buttons');
 
 module.exports = {
     name: 'help',
@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['h', 'list', 'commands'],
     emoji: '❔',
     usage: '<optional command name>',
-    execute(message, args, client) {
+    async execute(message, args, client) {
 
         const { commands } = message.client;
 
@@ -20,7 +20,7 @@ module.exports = {
                 //.filter(command => authorPerms.has(command.permissions) || authorPerms)
                 .map(command => `${command.emoji} \`${command.name}\` - ${command.description}`)
 
-            const embed = new MessageEmbed()
+            var embedList = new MessageEmbed()
                 .setColor('#FF7700 ')
                 .setTitle('Here\'s a list of my commands:')
                 .setDescription(`${files.join('\n\n')}`)
@@ -43,22 +43,16 @@ module.exports = {
                 select.addOptions(option)
             });
 
-            message.author.send(embed, select) //message.author.send(data, { split: true })
-                .then(() => {
-                    if (message.channel.type !== 'dm') return message.reply('I\'ve sent you a DM with my commands!');
-                })
-                .catch(error => {
-                    logger.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
-                });
-        }
+            var msg = await message.author.send(embedList, select) //message.author.send(data, { split: true })
 
-        client.on('clickMenu', async (menu) => {
-            if (menu.id != 'helpmenu') return
-            try {
-                await menu.reply.send(getHelp(menu.values[0]))
-            } catch (err) { }//console.log(err) }//
-        })
+            if (message.channel.type !== 'dm') {
+                message.reply('I\'ve sent you a DM with my commands!')
+                    .catch(error => {
+                        logger.error(`Could not send help DM to ${message.author.tag}.\n`, error);
+                        message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
+                    });
+            }
+        }
 
         if (args.length) {
             let data = []
@@ -75,6 +69,21 @@ module.exports = {
             if (!command) { return message.reply('That\'s not a valid command!') }
             return message.channel.send(getHelp(name))
         }
+
+
+        const filter = (b) => b.clicker.user.bot == false
+
+        var collector = await msg.createMenuCollector(filter, { idle: 60000 * 10, errors: ['time'] })
+
+        collector.on('collect', async (menu) => {
+            await menu.reply.send(getHelp(menu.values[0]))
+        });
+
+        collector.on('end', (menu, reason) => {
+            if (reason != 'idle') return
+            msg.edit(embedList, null)
+        })
+
 
         function getHelp(name) {
 

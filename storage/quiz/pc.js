@@ -1,7 +1,8 @@
 const Math = require('mathjs');
-const Discord = require('discord.js')
+const { MessageEmbed } = require('discord.js')
 const questions = require('../../storage/quiz/pcq.json')
 const result = require('../../storage/quiz/pcr.js')
+const disbut = require("discord-buttons");
 
 module.exports = {
     name: 'pc',
@@ -12,24 +13,21 @@ module.exports = {
     isQuiz: true,
     guildOnly: false,
     masterOnly: false,
-    async execute(message, author){
+    async execute(message, author) {
         // variables
         var answers = new Object();     // Store user's answers
         var qn = 0; // Current question order
-    
-    
+
         // Populate questionsObject
-    
         var questionsObject = new Object();     // Question objects with ID keys
         questions.forEach(populateQO);
-    
+
         function populateQO(value) {
-          questionsObject[value['id']] = value
+            questionsObject[value['id']] = value
         }
-    
-    
+
+
         // Populate & shuffle questionsOrder
-        
         var questionsOrder = Object.keys(questionsObject); //Array of shuffled question IDs
         /*
         const urlParams = new URLSearchParams(window.location.search);
@@ -44,26 +42,50 @@ module.exports = {
           }
         }
         */
-    
+
         // Question initialization
 
-        EmojiArray = ['🟦','🟩','⬜','🟧','🟥','↩️']
-
-        const qEmbed = new Discord.MessageEmbed()
-            .setTitle(`Where on the compass are you?`)
-            .setDescription(`You will be presented with a series of statements. For each one, click the button with your opinion on it.`)
+        const qEmbed = new MessageEmbed()
             .addField('\u200b', '\u200b')
-            .setFooter(`React to the message to answer questions\n${EmojiArray[0]} - Strongly agree\n${EmojiArray[1]} - Agree\n${EmojiArray[2]} - Neutral/unsure\n${EmojiArray[3]} - Disagree\n${EmojiArray[4]} - Strongly disagree\n\n${EmojiArray[5]} - Previous question`);
+            .setFooter(`To answer, click on the button with your opinion on it`);
 
-        var msg = await message.channel.send({embed: qEmbed}) //
 
-        // EmojiArray.forEach(e => msg.react(e))
-        await msg.react(EmojiArray[0])
-        await msg.react(EmojiArray[1])
-        await msg.react(EmojiArray[2])
-        await msg.react(EmojiArray[3])
-        await msg.react(EmojiArray[4])
-        await msg.react(EmojiArray[5])
+        let b1 = new disbut.MessageButton()
+            .setLabel("Strongly Agree")
+            .setID("1")
+            .setStyle("green");
+
+        let b2 = new disbut.MessageButton()
+            .setLabel("Agree")
+            .setID("0.5")
+            .setStyle("green");
+
+        let b3 = new disbut.MessageButton()
+            .setLabel("Neutral/Unsure")
+            .setID("0")
+            .setStyle("grey");
+
+        let b4 = new disbut.MessageButton()
+            .setLabel("Disagree")
+            .setID("-0.5")
+            .setStyle("red");
+
+        let b5 = new disbut.MessageButton()
+            .setLabel("Strongly Disagree")
+            .setID("-1")
+            .setStyle("red");
+
+        var back = new disbut.MessageButton()
+            .setLabel("Previous Question")
+            .setID("bacc")
+            .setStyle("blurple")
+            .setDisabled(true);
+
+        var row1 = new disbut.MessageActionRow()
+            .addComponents(b1, b2, b3, b4, b5);
+
+
+        var msg = await message.channel.send(qEmbed, row1)
 
         await init_question()
 
@@ -76,111 +98,115 @@ module.exports = {
             return color;
         }
 
-        function init_question(){
+        function init_question() {
+            if (qn == 0) { back.setDisabled(true) }
 
-            const exampleEmbed = new Discord.MessageEmbed(qEmbed)
-                .setTitle("Question " + (qn + 1) + " of " + (questions.length))
+            var row2 = new disbut.MessageActionRow()
+                .addComponent(back);
+
+            const exampleEmbed = new MessageEmbed(qEmbed)
+                .setTitle(`Question ${qn + 1} of ${questions.length}`)
                 .setDescription(questions[qn].question)
                 .setColor(random_col());
-            msg.edit(exampleEmbed)
 
-
-            const filter = (reaction, user) => EmojiArray.includes(reaction.emoji.name) && user.id === author.id
-            
-            const collector = msg.createReactionCollector(filter, { max: 1, time: 60000*5, errors: ['time'] })
-
-            collector.on('collect', async (reaction, user) => {
-                
-                if (message.channel.type !== 'dm') { reaction.users.remove(user.id) }
-
-                if (reaction.emoji.name === EmojiArray[0]) { next_question(1.0) }
-                if (reaction.emoji.name === EmojiArray[1]) { next_question(0.5) }
-                if (reaction.emoji.name === EmojiArray[2]) { next_question(0.0) }
-                if (reaction.emoji.name === EmojiArray[3]) { next_question(-0.5) }
-                if (reaction.emoji.name === EmojiArray[4]) { next_question(-1.0) }
-                if (reaction.emoji.name === EmojiArray[5]) { prev_question() }
-            });
-
-            collector.on('end', (collection, reason) => {
-                if (reason == 'time') {
-                    msg.reactions.removeAll()
-                    const emptyEmbed = new Discord.MessageEmbed()
-                        .setColor('#FF0000')
-                        .setTitle('Quiz timed out!')
-                        .setDescription('Try \`quiz\` command again!');
-                    msg.edit(emptyEmbed)
-                }
-            })
+            msg.edit(exampleEmbed, { components: [row1, row2] })
         }
-    
-    
+
+        const filter = (b) => b.clicker.user.bot == false
+
+        const collector = msg.createButtonCollector(filter, { idle: 60000 * 20, errors: ['time'] })
+
+        collector.on('collect', async (button) => {
+            if (button.clicker.user.id !== author.id) { return button.reply.send(`${button.clicker.user}, Someone else is doing this quiz!\nTry starting one yourself...`, true) }
+            if (button.id == 'bacc') { await prev_question(); return button.reply.defer() }
+
+            await next_question(button.id)
+            await button.reply.defer()
+        });
+
+        collector.on('end', (collection, reason) => {
+            if (reason == 'time') {
+                msg.reactions.removeAll()
+                const emptyEmbed = new MessageEmbed()
+                    .setColor('#FF0000')
+                    .setTitle('Quiz timed out!')
+                    .setDescription('Try \`quiz\` command again!');
+
+                msg.edit(emptyEmbed, null)
+            }
+        })
+        //}
+
+
         // Next question
-    
+
         function next_question(answer) {
-    
+
             answers[questionsOrder[qn]] = answer;
             qn++;
-    
+
+            back.setDisabled(false)
+
             if (qn < questionsOrder.length) {
                 init_question();
             } else {
                 results();
             }
         }
-    
-    
+
+
         // Previous question
-    
+
         function prev_question() {
             if (qn == 0) return init_question()
 
             qn--;
-    
+
             delete answers[questionsOrder[qn]];
-            
+
             init_question();
         }
-    
-    
+
+
         // RESULTS
-    
+
         async function results() {
             var right = 0
             var auth = 0
             var prog = 0
-            
+
             pct = percentageCalculation(); // Calculate final results
-            
+
             var args = ''; // prepare arguments
             for (const i in Object.keys(pct)) {
                 effectName = Object.keys(pct)[i]
                 //args += `${effectName}=${pct[effectName]}`
 
-                if (effectName == 'right'){var right = pct[effectName]}
-                if (effectName == 'auth'){var auth = pct[effectName]}
-                if (effectName == 'prog'){var prog = pct[effectName]}
-    
+                if (effectName == 'right') { var right = pct[effectName] }
+                if (effectName == 'auth') { var auth = pct[effectName] }
+                if (effectName == 'prog') { var prog = pct[effectName] }
+
                 /*
                 var cycle = parseInt(i)
                 if (cycle+1 !== Object.keys(pct).length) {
                     args += '&'
                 }*/
             }
-            
+
             await msg.delete()
             await result.execute(message, author, right, auth, prog)
             //await message.channel.send(result.execute(message, author, right, auth, prog))
         }
-    
-    
+
+
         // Calculate percentage
-    
+
         function percentageCalculation() {
             // calc max
             var max = new Object(); // Max possible scores
             var score = new Object(); // User scores
             var pct = new Object(); // Percentages/Score
-    
+
             // prepare
             for (const id in answers) {
                 for (const effectName in questionsObject[id].effects) {
@@ -188,30 +214,30 @@ module.exports = {
                     score[effectName] = 0
                 }
             }
-    
+
             // get max & scores
             for (const id in answers) {
                 // dismiss "don't know"
                 if (answers[id] !== null) {
                     for (const effectName in questionsObject[id].effects) {
                         max[effectName] += Math.abs(questionsObject[id].effects[effectName]);
-                        score[effectName] += answers[id]*questionsObject[id].effects[effectName];
+                        score[effectName] += answers[id] * questionsObject[id].effects[effectName];
                     }
                 }
             }
-    
+
             // calc score
-    
+
             for (const i in Object.keys(max)) {
                 effectName = Object.keys(max)[i]
-    
+
                 if (max[effectName] > 0) {
-                    pct[effectName] = (Math.round((score[effectName]*10/max[effectName]) * 100) / 100).toFixed(2);
+                    pct[effectName] = (Math.round((score[effectName] * 10 / max[effectName]) * 100) / 100).toFixed(2);
                 } else {
                     pct[effectName] = 0
                 }
             }
-    
+
             return pct;
         }
 

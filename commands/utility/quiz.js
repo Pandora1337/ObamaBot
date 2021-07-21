@@ -9,7 +9,7 @@ module.exports = {
     args: false,
     guildOnly: false,
     masterOnly: false,
-    execute(message, args, client) {
+    async execute(message, args, client) {
 
         //message.delete();
 
@@ -19,6 +19,7 @@ module.exports = {
             .setMaxValues(1);
 
         const files3 = client.quizes.filter(quiz => quiz.isQuiz === true);
+
         files3.forEach(c => {
 
             let option = new MessageMenuOption()
@@ -33,16 +34,21 @@ module.exports = {
         });
 
         if (client.quizes.some(a => a.name === args[0] == true && a.isQuiz == true)) return client.quizes.get(args[0]).execute(message, message.author);
-        else {message.channel.send('Select the quiz you want to play from the menu!\n', quizmenu);}
+        else {var msg = await message.channel.send('Select the quiz you want to play from the menu!\n', quizmenu);}
 
-        client.on('clickMenu', async (menu) => {
-            if (menu.id != 'quizmenu') return;
 
-            try {
-                //message.channel.send(menu.clicker.user.displayAvatarURL({ format: 'jpg' }))
-                await menu.reply.defer();
-                await client.quizes.get(menu.values[0]).execute(message, menu.clicker.user)
-            } catch (err) { }//console.log(err) }//
+        const filter = (b) => b.clicker.user.bot == false
+
+        var collector = msg.createMenuCollector(filter, { idle: 60000 * 10, errors: ['time'] })
+
+        collector.on('collect', async (menu) => {
+            await menu.reply.defer();
+            client.quizes.get(menu.values[0]).execute(message, menu.clicker.user)
+        });
+
+        collector.on('end', (menu, reason) => {
+            if (reason != 'idle') return
+            msg.edit('Use my \`quiz\` command to play a quiz!', null)
         })
     }
 }
