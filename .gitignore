@@ -1,12 +1,8 @@
 node_modules/
 logs/
-.eslintrc.json
-monke.zip
+commands/testing
 package-lock.json
-gitignore
-config.json
-configLive.json
-configPublic.json
-
+.gitignore
+.git
 
 

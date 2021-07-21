@@ -1,16 +1,26 @@
+
+const TOKEN = process.env.dupersecret
+
 const fs = require('fs');
 const Discord = require('discord.js');
+const { botId } = require('./config.json');
 
 const client = new Discord.Client();
+require("discord-buttons")(client);
 
+//quizzes collection
+client.quizes = new Discord.Collection();
 
-/*
-client.on('ready', () => logger.log('info', 'The bot is online!'));
-client.on('debug', m => logger.log('debug', m));
-client.on('warn', m => logger.log('warn', m));
-client.on('error', m => logger.log('error', m));
-*/
+const Folder = fs.readdirSync('./storage/quiz/')
 
+for (const file of Folder) {
+    if (file.endsWith('.js')) {
+        const quiz = require(`./storage/quiz/${file}`);
+        client.quizes.set(quiz.name, quiz);
+    }
+}
+
+//events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
@@ -22,18 +32,19 @@ for (const file of eventFiles) {
     }
 }
 
-client.commands = new Discord.Collection();
 
-//const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+//commands collection
+client.commands = new Discord.Collection();
 
 const commandFolders = fs.readdirSync('./commands');
 
 for (const folder of commandFolders) {
-	const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
         client.commands.set(command.name, command);
     }
 }
 
-client.login(process.env.dupersecret);
+
+client.login(TOKEN);

@@ -1,6 +1,6 @@
 {
   "name": "ObamaBot",
-  "version": "2.0.0",
+  "version": "2.5.0",
   "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,7 +13,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.5.0",
     "canvas": "^2.8.0",
-    "chalk": "^4.1.0",
+    "express": "^4.17.1",
     "discord.js": "^12.5.3",
     "ffmpeg-static": "^4.3.0",
     "fs": "0.0.1-security",

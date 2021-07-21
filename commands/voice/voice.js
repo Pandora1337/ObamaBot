@@ -8,6 +8,7 @@ module.exports = {
     aliases: ['v', 'audio', 'a'],
     usage: '[audio file name] <optional channel name>',
     example: 'ugly General',
+    emoji: '🎤',
     args: false,
     guildOnly: true,
     permissions: '',
@@ -24,7 +25,7 @@ module.exports = {
         // const list = 'Here are the audio files you can play:\n\n' + files.join('\n') + `\n\nProper usage: \`${prefix}v [audio file] <optional voice channel>\``
         
         const embed = new MessageEmbed()
-            .setColor('#b06dad ')
+            .setColor('#9423E1')
             .setTitle('Here are the audio files you can play:')
             .setDescription(files.join('\n'))
             //.setThumbnail('https://i.imgur.com/wSTFkRM.png')

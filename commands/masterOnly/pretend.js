@@ -1,15 +1,15 @@
 module.exports = {
     name: 'pretend',
     description: 'send msg as obama',
-    aliases: ['p'],
-    usage: '',
-    example: '',
+    aliases: ['msg'],
+    usage: ' <@user> hello',
+    example: 'hey Obama here',
     args: false,
     guildOnly: false,
     permissions: '',
     masterOnly: true,
     execute(message, args, client){
-        const filter = m => m.content.length > 0;
+        //const filter = m => m.content.length > 0;
 
 		const user = getUserFromMention(args[0]);
         message.delete()
@@ -21,16 +21,17 @@ module.exports = {
 		if (user) {
             const m = user.send(args.slice(1).join(' '))
 
+            /*
             .then(m => {
                 m.channel.awaitMessages(filter, { max: 50, time: 60000 * 1, errors: ['time'] })
                 .then(collected => {
                     message.author.send(collected.join('\n'));
                 })
                 .catch(collected => {
-                    message.author.send('---------');
+                    message.author.send('------------------------------------');
                 });
             })
-            
+            */
            
         }
         

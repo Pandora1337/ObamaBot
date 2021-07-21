@@ -1,10 +1,9 @@
-//const chalk = require('chalk');
 const logger = require('../../logger');
 
 module.exports = {
     name: 'exit',
-    description: 'Obama gets shut down',
-    usage: 'no dont pls',
+    description: 'bot gets shut down',
+    usage: ' ',
     masterOnly: true,
     execute(message, client){
         logger.info('SHUTTING DOWN')
