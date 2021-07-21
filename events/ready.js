@@ -10,7 +10,6 @@ module.exports = {
                 console.log('-------------------------------');
 
                 client.user.setPresence({ activity: { name: ACTIVITY, type: ACTIVITY_TYPE }, status: STATUS })
-                //client.user.setAvatar('https://media1.tenor.com/images/82a9076fd2d9b1a574cb239750b1491e/tenor.gif?itemid=5118627')
                         .then(console.log)
                         .catch(console.error);
 	},
