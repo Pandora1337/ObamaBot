@@ -1,4 +1,5 @@
 const { createLogger, format, transports, addColors } = require('winston');
+
 const myCustomLevels = {
   levels: {
     error: 0,
@@ -15,12 +16,13 @@ const myCustomLevels = {
 
 addColors(myCustomLevels.colors);
 
+
 module.exports = createLogger({
   levels: myCustomLevels.levels,
   format: format.combine(
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm' }),
     format.errors({ stack: true }),
-    format.printf(log => `[${log.level.toUpperCase()}] [${log.timestamp}]: ${log.message}`)
+    format.printf(log => `[${log.timestamp}] [${log.level.toUpperCase()}]: ${log.message}`)
   ),
   transports: [
     new transports.Console({
@@ -31,7 +33,17 @@ module.exports = createLogger({
       )
     }),
 
-    new transports.File({ filename: 'logs/logy.log', level: 'exec'}),
-    new transports.File({ filename: 'logs/errors.log', level: 'error'})
+
+    new transports.File({ filename: 'logs/logy.log', level: 'exec' })
+    /*,
+    new transports.File({ 
+      filename: 'logs/weblog.log',
+      level: 'exec',
+      format: format.combine(
+        format.colorize(),
+        format.printf(log => `[${log.timestamp}] [${log.level.toUpperCase()}]: ${log.message}`)
+      )
+    })
+    */
   ]
 });
