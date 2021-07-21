@@ -2,8 +2,6 @@ const { prefix, masterId, botId } = require('../config.json');
 const Discord = require('discord.js');
 //const webhook = new Discord.WebhookClient('831149756406562837','ft_cV25WOi0aJCvtnai_wDfA2WK-CZyCiDdVojLBFGWxOX5_f8SLZl_OxENQQvOiq5xG');
 const logger = require('../logger.js');
-//const resp = require('../storage/response.json');
-//const chalk = require('chalk');
 
 module.exports = {
 	name: 'message',
@@ -13,6 +11,7 @@ module.exports = {
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const commandName = args.shift().toLowerCase();
 
+        if (message.author.bot) return
 
         if (!message.content.startsWith(prefix)) {/*
             if (mesSent.includes('jew') && message.channel.id === '726018347145363497'){
@@ -67,17 +66,13 @@ module.exports = {
         command.execute(message, args, client);
         try {
             logger.exec(`(${commandName} ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
-            //console.log(chalk.green(`[${commandName} ${args.join(' ')}]`), ` was executed in ${message.guild.name} by ${message.author.username}!`);
         } 
         catch (error) {
             logger.exec(`(${commandName} ${args.join(' ')}) was executed in DM with ${message.author.tag}!`);
-            //console.log(chalk.green(`[${commandName} ${args}]`), ` was executed in DM with ${message.author.username}!`);
         }
     } catch (error) {
         logger.error(`Error has occured while executing ${commandName} ${args.join(' ')}`)
         logger.error(error)
-        //console.log(chalk.redBright(`Error occured while executing a command!`))
-        //console.error(error);
         message.reply('There was an error trying to execute that command!');
         }
     },
