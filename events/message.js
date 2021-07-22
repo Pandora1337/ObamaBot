@@ -41,7 +41,7 @@ module.exports = {
         const command = client.commands.get(commandName)
             || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     
-        if (!command) return;
+        if (!command || commandName.length <= 0) return;
 
         if(command.masterOnly && message.author.id !== masterId){
             return message.channel.send('Nice try, only Biden can do that!')
