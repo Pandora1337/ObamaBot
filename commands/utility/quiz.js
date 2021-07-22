@@ -1,41 +1,54 @@
-const fs = require('fs');
-const {prefix} = require('../../config.json')
-const { Collection, MessageEmbed } = require('discord.js');
+const { MessageMenuOption, MessageMenu } = require('discord-buttons');
 
 module.exports = {
     name: 'quiz',
     description: 'Lets you play a few quizes!',
     aliases: ['q'],
-    usage: '[quiz name]',
-    example: 'monke',
+    usage: '<quiz name>',
+    emoji: '🤔',
     args: false,
     guildOnly: false,
     masterOnly: false,
-    execute(message, args, client){
-        client.quizes = new Collection();
+    async execute(message, args, client) {
 
-        const Folder = fs.readdirSync('./storage/quiz/')
+        //message.delete();
 
-        for (const file of Folder) {
-            if (file.endsWith('.js')){
-            const quiz = require(`../../storage/quiz/${file}`);
-            client.quizes.set(quiz.name, quiz);
-            }
-        }
-        
-        const files2 = client.quizes.filter(quiz => quiz.isQuiz === true)
-            .map(quiz =>  /*${quiz.name.split('.').slice(0,-1)}*/`\`${quiz.name}\` - ${quiz.description} by ${quiz.author}`)
-        // const list2 = 'Here are the quizes you can play:\n\n' + files2.join('\n') + `\n\nProper usage: \`${prefix}q [quiz name]\``
+        const quizmenu = new MessageMenu()
+            .setID('quizmenu')
+            .setPlaceholder('Select a quiz to play!')
+            .setMaxValues(1);
 
-        const embed = new MessageEmbed()
-            .setColor('#35b1c9')
-            .setTitle('Here are the quizzes you can play:')
-            .setDescription(files2.join('\n'))
-            //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
-            .setFooter(`Proper usage:  ${prefix}q [quiz name]`);
-        
-        if (!args.length) { return message.channel.send(embed) }
+        const files3 = client.quizes.filter(quiz => quiz.isQuiz === true);
 
-        if (client.quizes.some(a => a.name === args[0] == true)) return client.quizes.get(args[0]).execute(message)
+        files3.forEach(c => {
+
+            let option = new MessageMenuOption()
+                .setLabel(c.longName)
+                .setValue(c.name)
+                .setDescription(`${c.description}`);
+            if (c.emoji) { option.setEmoji(c.emoji) }
+            if (c.author) { option.setDescription(`${c.description} by ${c.author}`) }
+
+            quizmenu.addOptions(option)
+
+        });
+
+        if (client.quizes.some(a => a.name === args[0] == true && a.isQuiz == true)) return client.quizes.get(args[0]).execute(message, message.author);
+        else {var msg = await message.channel.send('Select the quiz you want to play from the menu!\n', quizmenu);}
+
+
+        const filter = (b) => b.clicker.user.bot == false
+
+        var collector = msg.createMenuCollector(filter, { idle: 60000 * 10, errors: ['time'] })
+
+        collector.on('collect', async (menu) => {
+            await menu.reply.defer();
+            client.quizes.get(menu.values[0]).execute(message, menu.clicker.user)
+        });
+
+        collector.on('end', (menu, reason) => {
+            if (reason != 'idle') return
+            msg.edit('Use my \`quiz\` command to play a quiz!', null)
+        })
     }
 }

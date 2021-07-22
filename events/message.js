@@ -1,9 +1,7 @@
 const { prefix, masterId, botId } = require('../config.json');
 const Discord = require('discord.js');
-const webhook = new Discord.WebhookClient('831149756406562837','ft_cV25WOi0aJCvtnai_wDfA2WK-CZyCiDdVojLBFGWxOX5_f8SLZl_OxENQQvOiq5xG');
+//const webhook = new Discord.WebhookClient('831149756406562837','ft_cV25WOi0aJCvtnai_wDfA2WK-CZyCiDdVojLBFGWxOX5_f8SLZl_OxENQQvOiq5xG');
 const logger = require('../logger.js');
-//const resp = require('../storage/response.json');
-//const chalk = require('chalk');
 
 module.exports = {
 	name: 'message',
@@ -14,31 +12,19 @@ module.exports = {
         const commandName = args.shift().toLowerCase();
 
         if (message.author.bot) return
-        /*
-        if (!message.content.startsWith(prefix)) {
-            if (mesSent.includes(resp) > -1){
-                message.react(resp.mesReact)
-                console.log(chalk.green(`[REACTED vietnam]`), `in ${message.guild.name} to ${message.author.username}!`)
-            } return
-        };*//**/ 
 
-        if (!message.content.startsWith(prefix)) {
-            if (mesSent.includes('vietnam') || mesSent.includes('<@&797851474309808178>')){
-                message.react('<:rising_storm_2:799965359384952852>')
-                //console.log(chalk.green(`[REACTED vietnam]`), `in ${message.guild.name} to ${message.author.username}!`)
-            }
-            if (mesSent.includes('thanks obama')){
-                message.react('👍🏿')
-                //console.log(chalk.green(`[REACTED thanks obama]`), `in ${message.guild.name} to ${message.author.username}!`)
-            }
+        if (!message.content.startsWith(prefix)) {/*
             if (mesSent.includes('jew') && message.channel.id === '726018347145363497'){
                 webhook.send('cool it with the anti-semetic remarks');
             } 
-            if((mesSent.includes('whats that') || mesSent.includes('what that')) && message.channel.id === '726018347145363497'){
-                webhook.send({files: ["./storage/ducttape.jpg"]});
-            }
             if((mesSent.includes('new card') || mesSent.includes('what that')) && message.channel.id === '726018347145363497'){
                 webhook.send('Impressive. Very nice. Let\'s see Paul Allen\'s card.');
+            }*/
+            if (mesSent.includes('vietnam') || mesSent.includes('<@&797851474309808178>')){
+                message.react('<:rising_storm_2:799965359384952852>')
+            }
+            if (mesSent.includes('thanks obama') || mesSent.includes('thank obama')){
+                message.react('👍🏿')
             }
             if (mesSent.includes('oil')){
                 message.channel.send('o_0');
@@ -46,12 +32,10 @@ module.exports = {
             if (mesSent.includes(`<@!${masterId}>`) && message.channel.type !== 'dm'){
                 client.commands.get('mention').execute(message, args, client);
                 logger.exec(`(MENTION ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
-                //console.log(chalk.green(`[MENTION ${args.join(' ')}]`), `was executed in ${message.guild.name} by ${message.author.username}!`);
             }
 			if (mesSent.includes(`<@!${botId}>`)){
-				//message.author.send(`My prefix is \`${prefix}\`, for the list of commands, type \`${prefix}help\``)
                 client.commands.get('help').execute(message, args, client);
-			}return
+			} return
         };
     
         const command = client.commands.get(commandName)
@@ -82,17 +66,13 @@ module.exports = {
         command.execute(message, args, client);
         try {
             logger.exec(`(${commandName} ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
-            //console.log(chalk.green(`[${commandName} ${args.join(' ')}]`), ` was executed in ${message.guild.name} by ${message.author.username}!`);
         } 
         catch (error) {
             logger.exec(`(${commandName} ${args.join(' ')}) was executed in DM with ${message.author.tag}!`);
-            //console.log(chalk.green(`[${commandName} ${args}]`), ` was executed in DM with ${message.author.username}!`);
         }
     } catch (error) {
         logger.error(`Error has occured while executing ${commandName} ${args.join(' ')}`)
         logger.error(error)
-        //console.log(chalk.redBright(`Error occured while executing a command!`))
-        //console.error(error);
         message.reply('There was an error trying to execute that command!');
         }
     },

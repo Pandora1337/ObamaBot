@@ -1,15 +1,15 @@
 const { prefix } = require('../../config.json');
 const logger = require('../../logger.js');
 const { MessageEmbed } = require('discord.js')
-const { MessageMenuOption, MessageMenu } = require('discord-buttons');
+const { MessageMenuOption, MessageMenu, MenuCollector } = require('discord-buttons');
 
 module.exports = {
     name: 'help',
     description: `Lists all my commands with a cool new menu!`,
     aliases: ['h', 'list', 'commands'],
-    emoji: '❓',
+    emoji: '❔',
     usage: '<optional command name>',
-    execute(message, args, client) {
+    async execute(message, args, client) {
 
         const { commands } = message.client;
 
@@ -18,15 +18,15 @@ module.exports = {
 
             const files = commands.filter(command => command.masterOnly === false || !command.masterOnly)
                 //.filter(command => authorPerms.has(command.permissions) || authorPerms)
-                .map(command => `\`` + command.name + `\`` + ` - ` + command.description)
+                .map(command => `${command.emoji} \`${command.name}\` - ${command.description}`)
 
-            const embed = new MessageEmbed()
-                .setColor('#FFA500 ')
+            var embedList = new MessageEmbed()
+                .setColor('#FF7700 ')
                 .setTitle('Here\'s a list of my commands:')
                 .setDescription(`${files.join('\n\n')}`)
                 .setThumbnail('https://image.cnbcfm.com/api/v1/image/104656161-GettyImages-688156110.jpg?v=1532563778')
                 .setFooter(`btw, my prefix is ${prefix}`);
-            //.setFooter(`You can send  ${prefix}help  [command name]  to get info on a specific command!`);
+            //  .setFooter(`You can send  ${prefix}help  [command name]  to get info on a specific command!`);
 
             var select = new MessageMenu()
                 .setID('helpmenu')
@@ -37,33 +37,22 @@ module.exports = {
                 let option = new MessageMenuOption()
                     .setLabel(c.name)
                     .setValue(c.name)
-                //.setDescription('YUH');
                 if (c.emoji) { option.setEmoji(c.emoji) }
                 //.setDescription(element.description);
 
                 select.addOptions(option)
-
             });
 
-            message.author.send(embed, select) //message.author.send(data, { split: true })
-                .then(() => {
-                    if (message.channel.type !== 'dm') return message.reply('I\'ve sent you a DM with my commands!');
-                })
-                .catch(error => {
-                    logger.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
-                });
+            var msg = await message.author.send(embedList, select) //message.author.send(data, { split: true })
+
+            if (message.channel.type !== 'dm') {
+                message.reply('I\'ve sent you a DM with my commands!')
+                    .catch(error => {
+                        logger.error(`Could not send help DM to ${message.author.tag}.\n`, error);
+                        message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
+                    });
+            }
         }
-
-
-        client.on('clickMenu', async (menu) => {
-            if (menu.id != 'helpmenu') return
-            try {
-
-                await menu.reply.send(getHelp(menu.values[0]))
-
-            } catch (err) { }
-        })
 
         if (args.length) {
             let data = []
@@ -75,29 +64,44 @@ module.exports = {
             }
 
             const name = args[0].toLowerCase();
+            const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
             if (!command) { return message.reply('That\'s not a valid command!') }
-
             return message.channel.send(getHelp(name))
         }
+
+
+        const filter = (b) => b.clicker.user.bot == false
+
+        var collector = await msg.createMenuCollector(filter, { idle: 60000 * 10, errors: ['time'] })
+
+        collector.on('collect', async (menu) => {
+            await menu.reply.send(getHelp(menu.values[0]))
+        });
+
+        collector.on('end', (menu, reason) => {
+            if (reason != 'idle') return
+            msg.edit(embedList, null)
+        })
+
 
         function getHelp(name) {
 
             let data = []
             const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
-            var title = `**Name:** ${command.name}`;
+
+            data.push(`**Name:** ${command.name}\n`)
 
             if (command.aliases) data.push(`**Short Name(s):** ${command.aliases.join(', ')}\n`);
             if (command.description) data.push(`**Description:** ${command.description}\n`);
             if (command.usage) data.push(`**Usage:** \`${prefix}${command.name} ${command.usage}\`\n`);
             if (command.example) data.push(`**Example:** \`${prefix}${command.name} ${command.example}\`\n`);
 
-            if (command.emoji) title = `**Name:** ${command.emoji} ${command.name}`
-
             const helpCommand = new MessageEmbed()
                 .setColor('#ebc83d')
-                .setTitle(`**Name:** ${command.emoji} ${command.name}`)
                 .setDescription(data)
+                .setTitle(`< ${command.name} >`);
+            if (command.emoji) { helpCommand.setTitle(`< ${command.emoji} ${command.name} >`) }
 
             return helpCommand
         }

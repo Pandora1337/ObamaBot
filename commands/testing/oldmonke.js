@@ -1,21 +1,21 @@
 const Math = require('mathjs');
-const { MessageEmbed } = require('discord.js')
-const questions = require('./monkeq.json')
-const ideologies = require('./monkei.json')
-const monkeresult = require('./monker.js')
-const disbut = require("discord-buttons");
+const Discord = require('discord.js')
+const questions = require('../../storage/quiz/monkeq.json')
+const ideologies = require('../../storage/quiz/monkei.json')
+const monkeresult = require('../../storage/quiz/monker.js')
 
 module.exports = {
-    name: 'monke',
-    longName: 'MonkeValues',
+    name: 'oldmonke',
+    longName: 'old MonkeValues',
     description: 'Quizzes you on how monke you are!',
     author: 'u/imozupa',
     emoji: '🦧',
     isQuiz: true,
     guildOnly: false,
-    masterOnly: false,
+    masterOnly: true,
     async execute(message, author) {
         // CODE AUTHOR = https://www.reddit.com/user/imozupa
+        author = author
 
         var max_econ, max_dipl, max_govt, max_scty; // Max possible scores
         max_econ = max_dipl = max_govt = max_scty = 0;
@@ -24,45 +24,24 @@ module.exports = {
         var qn = 0; // Question number
         var prev_answer = null;
 
-        const qEmbed = new MessageEmbed()
+        EmojiArray = ['🟦', '🟩', '⬜', '🟧', '🟥', '↩️']
+
+        const qEmbed = new Discord.MessageEmbed()
+            .setTitle(`What kind of monke are you?`)
+            .setDescription(`You will be presented with a series of statements. For each one, click the button with your opinion on it.`)
             .addField('\u200b', '\u200b')
-            .setFooter(`To answer, click on the button with your opinion on it`);
+            .setFooter(`React to the message to answer questions\n${EmojiArray[0]} - Strongly agree\n${EmojiArray[1]} - Agree\n${EmojiArray[2]} - Neutral/unsure\n${EmojiArray[3]} - Disagree\n${EmojiArray[4]} - Strongly disagree\n\n${EmojiArray[5]} - Previous question`);
 
-        let b1 = new disbut.MessageButton()
-            .setLabel("Strongly Agree")
-            .setID("1")
-            .setStyle("green");
+        var msg = await message.channel.send({ embed: qEmbed }) //
 
-        let b2 = new disbut.MessageButton()
-            .setLabel("Agree")
-            .setID("0.5")
-            .setStyle("green");
+        //EmojiArray.forEach(async e => await msg.react(e))
 
-        let b3 = new disbut.MessageButton()
-            .setLabel("Neutral/Unsure")
-            .setID("0")
-            .setStyle("grey");
-
-        let b4 = new disbut.MessageButton()
-            .setLabel("Disagree")
-            .setID("-0.5")
-            .setStyle("red");
-
-        let b5 = new disbut.MessageButton()
-            .setLabel("Strongly Disagree")
-            .setID("-1")
-            .setStyle("red");
-
-        var back = new disbut.MessageButton()
-            .setLabel("Previous Question")
-            .setID("bacc")
-            .setStyle("blurple")
-            .setDisabled(true);
-
-        var row1 = new disbut.MessageActionRow()
-            .addComponents(b1, b2, b3, b4, b5);
-
-        var msg = await message.channel.send(qEmbed, row1 ) //
+        await msg.react(EmojiArray[0])
+        await msg.react(EmojiArray[1])
+        await msg.react(EmojiArray[2])
+        await msg.react(EmojiArray[3])
+        await msg.react(EmojiArray[4])
+        await msg.react(EmojiArray[5])
 
         await init_question()
 
@@ -76,41 +55,40 @@ module.exports = {
         }
 
         function init_question() {
-            if (qn == 0) {back.setDisabled(true)}
 
-            var row2 = new disbut.MessageActionRow()
-                .addComponent(back);
-
-            const exampleEmbed = new MessageEmbed(qEmbed)
-                .setTitle(`Question ${qn + 1} of ${questions.length}`)
+            const exampleEmbed = new Discord.MessageEmbed(qEmbed)
+                .setTitle("Question " + (qn + 1) + " of " + (questions.length))
                 .setDescription(questions[qn].question)
                 .setColor(random_col())
+            msg.edit(exampleEmbed)
 
-            msg.edit(exampleEmbed, { components: [row1, row2] })
+
+            const filter = (reaction, user) => EmojiArray.includes(reaction.emoji.name) && user.id === author.id
+
+            const collector = msg.createReactionCollector(filter, { max: 1, time: 60000 * 5, errors: ['time'] })
+
+            collector.on('collect', async (reaction, user) => {
+
+                if (message.channel.type !== 'dm') { reaction.users.remove(user.id) }
+
+                if (reaction.emoji.name === EmojiArray[0]) { next_question(1.0) }
+                if (reaction.emoji.name === EmojiArray[1]) { next_question(0.5) }
+                if (reaction.emoji.name === EmojiArray[2]) { next_question(0.0) }
+                if (reaction.emoji.name === EmojiArray[3]) { next_question(-0.5) }
+                if (reaction.emoji.name === EmojiArray[4]) { next_question(-1.0) }
+                if (reaction.emoji.name === EmojiArray[5]) { prev_question() }
+            });
+
+            collector.on('end', (collection, reason) => {
+                if (reason != 'time') return
+                msg.reactions.removeAll()
+                const emptyEmbed = new Discord.MessageEmbed()
+                    .setColor('#FF0000')
+                    .setTitle('Quiz timed out!')
+                    .setDescription('Try \`quiz\` command again!');
+                msg.edit(emptyEmbed)
+            })
         }
-
-        const filter = (b) => b.clicker.user.bot == false
-
-        const collector = msg.createButtonCollector(filter, { idle: 60000 * 20, errors: ['idle'] })
-
-        collector.on('collect', async (button) => {
-            if (button.clicker.user.id !== author.id) { return button.reply.send(`${button.clicker.user}, Someone else is doing this quiz!\nTry starting one yourself...`, true) }
-            if (button.id == 'bacc') { await prev_question(); return button.reply.defer() }
-
-            await next_question(button.id)
-            await button.reply.defer()
-        });
-
-        collector.on('end', (button, reason) => {
-            if (reason != 'idle') return
-            const emptyEmbed = new MessageEmbed()
-                .setColor('#FF0000')
-                .setTitle('Quiz timed out!')
-                .setDescription('Try \`quiz\` command again!');
-
-            msg.edit(emptyEmbed, null)
-        })
-        //}
 
 
         for (var i = 0; i < questions.length; i++) {
@@ -127,7 +105,6 @@ module.exports = {
             scty += mult * questions[qn].effect.scty
             qn++;
             prev_answer = mult;
-            back.setDisabled(false)
             if (qn < questions.length) {
                 init_question();
                 //results()
@@ -145,7 +122,6 @@ module.exports = {
             govt -= prev_answer * questions[qn].effect.govt;
             scty -= prev_answer * questions[qn].effect.scty;
             prev_answer = null;
-            back.setDisabled(true)
             init_question();
 
         }
@@ -166,9 +142,9 @@ module.exports = {
 
             function setLabel(val, ary) {
                 if (val > 100) { return "" } else
-                if (val > 90)  { return ary[0] } else
-                if (val > 75)  { return ary[1] } else
-                if (val > 60)  { return ary[2] } else
+                if (val > 90 ) { return ary[0] } else
+                if (val > 75 ) { return ary[1] } else
+                if (val > 60 ) { return ary[2] } else
                 if (val >= 40) { return ary[3] } else
                 if (val >= 25) { return ary[4] } else
                 if (val >= 10) { return ary[5] } else
@@ -183,7 +159,7 @@ module.exports = {
             might = (100 - peace).toFixed(1)
             authority = (100 - liberty).toFixed(1)
             tradition = (100 - progress).toFixed(1)
-
+    
             const economiclabel = setLabel(equality, econArray)
             const diplomaticlabel = setLabel(peace, diplArray)
             const statelabel = setLabel(liberty, govtArray)
@@ -207,6 +183,8 @@ module.exports = {
 
             await msg.delete()
             await monkeresult.execute(message, author, economiclabel, diplomaticlabel, statelabel, societylabel, ideology)
+            //await message.channel.send(monkeresult.execute(message, author, economiclabel, diplomaticlabel, statelabel, societylabel, ideology))
+                     //, equality, peace, liberty, progress, )))
         }
 
     }
