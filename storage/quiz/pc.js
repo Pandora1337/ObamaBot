@@ -114,7 +114,7 @@ module.exports = {
 
         const filter = (b) => b.clicker.user.bot == false
 
-        const collector = msg.createButtonCollector(filter, { idle: 60000 * 20, errors: ['time'] })
+        const collector = msg.createButtonCollector(filter, { idle: 60000 * 20, errors: ['idle'] })
 
         collector.on('collect', async (button) => {
             if (button.clicker.user.id !== author.id) { return button.reply.send(`${button.clicker.user}, Someone else is doing this quiz!\nTry starting one yourself...`, true) }
@@ -125,15 +125,13 @@ module.exports = {
         });
 
         collector.on('end', (collection, reason) => {
-            if (reason == 'time') {
-                msg.reactions.removeAll()
-                const emptyEmbed = new MessageEmbed()
-                    .setColor('#FF0000')
-                    .setTitle('Quiz timed out!')
-                    .setDescription('Try \`quiz\` command again!');
+            if (reason != 'idle') return
+            const emptyEmbed = new MessageEmbed()
+                .setColor('#FF0000')
+                .setTitle('Quiz timed out!')
+                .setDescription('Try \`quiz\` command again!');
 
-                msg.edit(emptyEmbed, null)
-            }
+            msg.edit(emptyEmbed, null)
         })
         //}
 
