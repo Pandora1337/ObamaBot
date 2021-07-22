@@ -1,10 +1,7 @@
 node_modules/
 logs/
-.eslintrc.json
-package-lock.json
-config.json
-configLive.json
-configPublic.json
-
+commands/testing/
+.gitignore
+.git
 
 
