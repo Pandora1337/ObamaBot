@@ -1,6 +1,5 @@
 const { prefix, masterId, botId } = require('../config.json');
 const Discord = require('discord.js');
-//const webhook = new Discord.WebhookClient('831149756406562837','ft_cV25WOi0aJCvtnai_wDfA2WK-CZyCiDdVojLBFGWxOX5_f8SLZl_OxENQQvOiq5xG');
 const logger = require('../logger.js');
 
 module.exports = {
@@ -13,13 +12,7 @@ module.exports = {
         
         if (message.author.bot) return
 
-        if (!message.content.startsWith(prefix)) {/*
-            if (mesSent.includes('jew') && message.channel.id === '726018347145363497'){
-                webhook.send('cool it with the anti-semetic remarks');
-            } 
-            if((mesSent.includes('new card') || mesSent.includes('what that')) && message.channel.id === '726018347145363497'){
-                webhook.send('Impressive. Very nice. Let\'s see Paul Allen\'s card.');
-            }*/
+        if (!message.content.startsWith(prefix)) {
             if (mesSent.includes('vietnam') || mesSent.includes('<@&797851474309808178>')){
                 message.react('<:rising_storm_2:799965359384952852>')
             }
@@ -31,7 +24,7 @@ module.exports = {
             }
             if (mesSent.includes(`<@!${masterId}>`) && message.channel.type !== 'dm' && message.author.id != masterId){
                 client.commands.get('mention').execute(message, args, client);
-                logger.exec(`(MENTION ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
+                logger.exec(`MENTION: ${args.join(' ')}`)
             }
 			if (mesSent.includes(`<@!${botId}>`)){
                 client.commands.get('help').execute(message, args, client);
@@ -64,12 +57,7 @@ module.exports = {
     
       try {
         command.execute(message, args, client);
-        try {
-            logger.exec(`(${commandName} ${args.join(' ')}) was executed in ${message.guild.name} by ${message.author.tag}!`)
-        } 
-        catch (error) {
-            logger.exec(`(${commandName} ${args.join(' ')}) was executed in DM with ${message.author.tag}!`);
-        }
+        logger.exec(`${commandName} ${args.join(' ')}`)
     } catch (error) {
         logger.error(`Error has occured while executing ${commandName} ${args.join(' ')}`)
         logger.error(error)

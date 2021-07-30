@@ -48,7 +48,7 @@ module.exports = {
             if (message.channel.type !== 'dm') {
                 message.reply('I\'ve sent you a DM with my commands!')
                     .catch(error => {
-                        logger.error(`Could not send help DM to ${message.author.tag}.\n`, error);
+                        logger.error(`Could not send help DM.\n`, error);
                         message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
                     });
             }
