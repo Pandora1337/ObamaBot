@@ -4,6 +4,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { botId } = require('./config.json');
+const logger = require('./logger.js')
 
 const client = new Discord.Client();
 require("discord-buttons")(client);
