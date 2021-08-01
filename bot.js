@@ -1,9 +1,26 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { TOKEN, botId } = require('./config.json');
+const logger = require('./logger.js')
 
 const client = new Discord.Client();
 require("discord-buttons")(client);
+
+/*
+//top.gg + DBL updates
+const { AutoPoster } = require("topgg-autoposter");
+const poster = new AutoPoster(topToken, client);
+
+const DBL = require("./storage/DBLupdate.js")
+const tbl = new DBL.get(dblToken) //process.env.dblToken
+
+poster.on('posted', (stats) => { // ran when succesfully posted
+    logger.info(`Posted stats to Top.gg | ${stats.serverCount} servers`)
+
+    memberCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
+    tbl.post(client.guilds.cache.size, memberCount)
+})
+*/
 
 //quizzes collection
 client.quizes = new Discord.Collection();
