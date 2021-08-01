@@ -1,6 +1,5 @@
 //const keepAlive = require('./server');
 //keepAlive
-const TOKEN = process.env.dupersecret
 
 const fs = require('fs');
 const Discord = require('discord.js');
@@ -8,6 +7,22 @@ const { botId } = require('./config.json');
 
 const client = new Discord.Client();
 require("discord-buttons")(client);
+
+
+//top.gg + DBL updates
+const { AutoPoster } = require("topgg-autoposter");
+const poster = new AutoPoster(process.env.topToken, client);
+
+const DBL = require("./storage/DBLupdate.js")
+const tbl = new DBL.get(process.env.dblToken)
+
+poster.on('posted', (stats) => { // ran when succesfully posted
+    logger.info(`Posted stats to Top.gg | ${stats.serverCount} servers`)
+
+    memberCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
+    tbl.post(client.guilds.cache.size, memberCount)
+})
+
 
 //quizzes collection
 client.quizes = new Discord.Collection();
@@ -48,4 +63,4 @@ for (const folder of commandFolders) {
 }
 
 
-client.login(TOKEN);
+client.login(process.env.dupersecret);
