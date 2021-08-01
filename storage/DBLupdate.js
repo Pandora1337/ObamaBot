@@ -10,7 +10,7 @@ class get {
     async post(server_count, user_count) {
 
         let body = { 'guilds': server_count, 'users': user_count }
-        await fetch(`https://discordbotlist.com/api/v1/bots/${botID}/stats`, {
+        await fetch(`https://discordbotlist.com/api/v1/bots/${botId}/stats`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: { 'Content-Type': 'application/json', 'authorization': this.auth },
