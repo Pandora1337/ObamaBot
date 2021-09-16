@@ -1,11 +1,13 @@
 {
   "name": "ObamaBot",
   "version": "3.0.0",
+  "description": "ObamaBot on discordjs v13",
   "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ."
+    "start": "node .",
   },
+  "engines": "16.8"
   "author": "Pandora1337 LTD.",
   "license": "ISC",
   "keywords": [],
