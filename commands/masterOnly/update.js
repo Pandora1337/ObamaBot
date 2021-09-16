@@ -1,7 +1,6 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { botId, TOKEN } = require('../../config.json');
-const guildId = '406570311555874818' //'613364808279916544' //
 
 module.exports = {
 	name: 'update',
@@ -10,6 +9,7 @@ module.exports = {
 	masterOnly: true,
 
 	execute(interaction, args, client) {
+		const guildId = interaction.guildId
 
 		const slCommands = []
 
