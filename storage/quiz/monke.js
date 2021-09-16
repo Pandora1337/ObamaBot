@@ -97,7 +97,7 @@ module.exports = {
         const collector = msg.createMessageComponentCollector({ idle: 60000 * 20, errors: ['idle'] })
 
         collector.on('collect', async (button) => {
-            if (button.user.id !== author.id) { return button.reply.send(`${button.user}, Someone else is doing this quiz!\nTry starting one yourself...`, true) }
+            if (button.user.id != author.id) { return button.reply({content: `${button.user}, Someone else is doing this quiz!\nTry starting one yourself...`, ephemeral: true}) }
             if (button.customId == 'bacc') { prev_question(); return button.deferUpdate() }
 
             await next_question(button.customId)
