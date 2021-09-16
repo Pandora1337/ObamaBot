@@ -1,7 +1,7 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { botId, TOKEN } = require('../../config.json');
-const guildId = '406570311555874818' //'613364808279916544' //
+const { botId } = require('../../config.json');
+const TOKEN = process.env.dupersecret
 
 module.exports = {
 	name: 'update',
@@ -10,6 +10,8 @@ module.exports = {
 	masterOnly: true,
 
 	execute(interaction, args, client) {
+		
+		const guildId = message.guildId
 
 		const slCommands = []
 
