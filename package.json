@@ -3,7 +3,9 @@
   "version": "3.0.0",
   "description": "ObamaBot on discordjs v13",
   "main": "bot.js",
-  "engines": "16.x",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
