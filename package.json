@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
   },
-  "engines": "16.8"
+  "engines": "16.8",
   "author": "Pandora1337 LTD.",
   "license": "ISC",
   "keywords": [],
