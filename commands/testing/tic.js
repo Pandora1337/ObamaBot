@@ -1,4 +1,4 @@
-const disbut = require("discord-buttons");
+//const disbut = require("discord-buttons");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
