@@ -75,7 +75,7 @@ module.exports = {
     
 	    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), `${author.username}-politcompass.png`);
 
-        return message.channel.send(attachment)
-        //return await attachment
+        return message.channel.send({files: [attachment]})
+        //return attachment
     }
 }

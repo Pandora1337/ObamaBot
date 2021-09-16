@@ -98,7 +98,7 @@ module.exports = {
 
 	const attachment = new MessageAttachment(canvas.toBuffer(), `Monke-${author.username}.png`)
 
-	return message.channel.send(attachment);
+	return message.channel.send({files: [attachment]});
     //return await attachment
 
     }
