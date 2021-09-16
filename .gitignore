@@ -1,5 +1,6 @@
 node_modules/
 logs/
+.archive/
 .eslintrc.json
 package-lock.json
 config.json
