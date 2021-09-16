@@ -1,7 +1,7 @@
 module.exports = {
     name: 'pretend',
     description: 'send msg as obama',
-    aliases: ['msg'],
+    aliases: ['msg', 'say'],
     usage: ' <@user> hello',
     example: 'hey Obama here',
     args: false,
@@ -12,7 +12,7 @@ module.exports = {
         //const filter = m => m.content.length > 0;
 
 		const user = getUserFromMention(args[0]);
-        message.delete()
+        if (message.channel.type != 'DM') { message.delete() }
 
         if (!user){
             message.channel.send(args.join(" "))
