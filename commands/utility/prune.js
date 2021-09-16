@@ -38,7 +38,7 @@ module.exports = {
 			console.error(err);
 			message.reply({ content: 'There was an error trying to prune messages in this channel! Do I have the appropriate permission?', ephemeral: true});
 		});
-		message.reply({ content: `Deleted ${amount} messages!`, ephemeral: true, allowedMentions: { repliedUser: false } })
+		if (message.type == 'APPLICATION_COMMAND') { message.reply({ content: `Deleted ${amount} messages!`, ephemeral: true, allowedMentions: { repliedUser: false } }) }
 	}
 }
 
