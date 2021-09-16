@@ -11,7 +11,7 @@ module.exports = {
 
 	execute(interaction, args, client) {
 		
-		const guildId = message.guildId
+		const guildId = interaction.guildId
 
 		const slCommands = []
 
