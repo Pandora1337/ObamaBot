@@ -6,8 +6,7 @@ const Discord = require('discord.js');
 const { botId } = require('./config.json');
 //const logger = require('./logger.js')
 
-const client = new Discord.Client();
-require("discord-buttons")(client);
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"], partials: ["CHANNEL"] });
 
 
 //top.gg + DBL updates
@@ -18,7 +17,7 @@ const DBL = require("./storage/DBLupdate.js")
 const tbl = new DBL.get(process.env.dblToken)
 
 poster.on('posted', (stats) => { // ran when succesfully posted
-    console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`)
+    //console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`)
 
     memberCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
     tbl.post(client.guilds.cache.size, memberCount)

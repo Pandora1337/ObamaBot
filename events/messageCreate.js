@@ -3,13 +3,13 @@ const Discord = require('discord.js');
 const logger = require('../logger.js');
 
 module.exports = {
-	name: 'message',
+	name: 'messageCreate',
 	execute(message, client) {
 
         const mesSent = message.content.toLowerCase();
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const commandName = args.shift().toLowerCase();
-
+        
         if (message.author.bot) return
 
         if (!message.content.startsWith(prefix)) {
@@ -47,7 +47,7 @@ module.exports = {
             }
         }
     
-        if (command.guildOnly && message.channel.type === 'dm') {
+        if (command.guildOnly && message.channel.type === 'DM') {
             return message.reply('I can\'t execute that command inside DMs!');
         }
         
@@ -57,8 +57,9 @@ module.exports = {
     
       try {
         command.execute(message, args, client);
-        logger.exec(`${commandName} ${args.join(' ')}`)
+        logger.exec(`${command.name} ${args.join(' ')}`)
     } catch (error) {
+        //console.error(error)
         logger.error(`Error has occured while executing ${commandName} ${args.join(' ')}`)
         logger.error(error)
         message.reply('There was an error trying to execute that command!');

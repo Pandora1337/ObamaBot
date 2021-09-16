@@ -1,7 +1,6 @@
 node_modules/
 logs/
 commands/testing/
-.gitignore
 .git
 
 

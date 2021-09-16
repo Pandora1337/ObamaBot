@@ -1,8 +1,8 @@
 {
 	"prefix": ">",
-	"ACTIVITY_TYPE": "WATCHING",
-	"ACTIVITY": "Joe from the shadows",
-	"STATUS": "idle",
+	"ACTIVITY_TYPE": "PLAYING",
+	"ACTIVITY": "with new slash commands!",
+	"STATUS": "online",
 	"masterId": "280299811310272513",
 	"botId": "826106135689560084"
 }

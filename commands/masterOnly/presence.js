@@ -17,7 +17,7 @@ module.exports = {
         conf.ACTIVITY_TYPE = aType
         conf.ACTIVITY = a
 
-        client.user.setPresence({ activity: { name: a, type: aType }})
+        client.user.setPresence({ activities: [{ name: a, type: aType }]})
         fs.writeFile('./config.json', JSON.stringify(conf, null, 2), 'utf8', function writeJSON(err) {
             if (err) return console.log(err);
           });
