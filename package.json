@@ -1,7 +1,7 @@
 {
   "name": "ObamaBot",
   "version": "3.0.0",
-  "description": "ObamaBot on discordjs v13",
+  "description": "My Bot on discordjs",
   "main": "bot.js",
   "engines": {
     "node": "16.x",
@@ -14,7 +14,6 @@
   "author": "Pandora1337 LTD.",
   "license": "ISC",
   "keywords": [],
-  "description": "",
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
