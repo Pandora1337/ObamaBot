@@ -15,11 +15,12 @@ module.exports = {
     guildOnly: true,
     permissions: '',
     masterOnly: false,
+    
     data: new SlashCommandBuilder()
         .setName('voice')
         .setDescription('Plays audio files!')
-		
-        .addStringOption(option => 
+        
+        .addStringOption(option =>  //non dynamic, too bad!
             option.setName('voice-line')
             .setRequired(true)
             .setDescription('The voice line to play')
@@ -33,6 +34,7 @@ module.exports = {
 			.addChoice('gwent3', 'gwent3')
 			.addChoice('gwent4', 'gwent4')
 			.addChoice('gwent5', 'gwent5')
+			.addChoice('gwent6', 'gwent6')
 			.addChoice('hmm', 'hmm')
 			.addChoice('monke', 'monke')
 			.addChoice('nani', 'nani')
@@ -41,14 +43,6 @@ module.exports = {
 			.addChoice('wind', 'wind')
         )
         .addStringOption(option => option.setName('voice-channel').setDescription('The voice channel to send Obama to')),
-
-	/*
-    data: new SlashCommandBuilder()
-        .setName('voice')
-        .setDescription('Lists and plays audio files!')
-        .addStringOption(option => option.setName('voice-line').setDescription('The voice line to play'))
-        .addStringOption(option => option.setName('voice-channel').setDescription('The voice channel to send Obama to')),
-		*/
 
     async execute(message, args, client) {
 
