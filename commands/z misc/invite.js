@@ -5,7 +5,7 @@ module.exports = {
     name: 'invite',
     description: 'The invites to Obama and his support server. Use this to update bot permissions.',
     usage: ' ',
-    aliases: ['support', 's', 'invite'],
+    aliases: ['support', 'invite'],
     example: '',
     emoji: '🙋',
     args: false,
