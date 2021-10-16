@@ -13,7 +13,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('quiz')
         .setDescription('Lets you play a few quizes!')
-        .addStringOption(option => option.setName('quiz-name').setDescription('The name of a quiz to play')),
+        .addStringOption(option => option.setName('quiz-name')
+            .setDescription('The name of a quiz to play')
+			.addChoice('MonkeValues', 'monke')  //non dynamic, too bad!
+			.addChoice('Political Compass', 'pc')
+        ),
 
     async execute(message, brug, client) {
 
