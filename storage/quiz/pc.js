@@ -45,7 +45,7 @@ module.exports = {
         // Question initialization
 
         const qEmbed = new MessageEmbed()
-            .setAuthor(this.longName)
+            .setAuthor(`${this.longName} - ${author.username}`)
             .addField('\u200b', '\u200b')
             .setFooter(`To answer, click on the button with your opinion on it`);
 
