@@ -47,8 +47,10 @@ module.exports = {
 
                     if (argAlias.indexOf(args[0]) > -1) {
                         emojidata.push(reactionEmoji.toString())
+                            .catch( error => {})
                     } else {
-                        previousMessage.react(reactionEmoji);
+                        previousMessage.react(reactionEmoji)
+                            .catch( error => {})
                     }
                 }
             }).then(array => {
