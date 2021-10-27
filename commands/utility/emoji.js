@@ -47,15 +47,14 @@ module.exports = {
 
                     if (argAlias.indexOf(args[0]) > -1) {
                         emojidata.push(reactionEmoji.toString())
-                            .catch( error => {})
                     } else {
                         previousMessage.react(reactionEmoji)
-                            .catch( error => {})
                     }
                 }
             }).then(array => {
                 if (argAlias.indexOf(args[0]) > -1) {
                     message.channel.send({ content: emojidata.join(' ').toString(), split: true })
+                            .catch( error => {})
                 }
             })
             .catch()
