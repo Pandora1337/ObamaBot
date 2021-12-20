@@ -21,18 +21,6 @@ poster.on('posted', (stats) => { // ran when succesfully posted
 })
 */
 
-//quizzes collection
-client.quizes = new Discord.Collection();
-
-const Folder = fs.readdirSync('./storage/quiz/')
-
-for (const file of Folder) {
-    if (file.endsWith('.js')) {
-        const quiz = require(`./storage/quiz/${file}`);
-        client.quizes.set(quiz.name, quiz);
-    }
-}
-
 //events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
@@ -48,7 +36,6 @@ for (const file of eventFiles) {
 
 //commands collection
 client.commands = new Discord.Collection();
-
 const commandFolders = fs.readdirSync('./commands');
 
 for (const folder of commandFolders) {
@@ -58,5 +45,34 @@ for (const folder of commandFolders) {
         client.commands.set(command.name, command);
     }
 }
+
+
+//quizzes collection & options
+client.quizes = new Discord.Collection();
+const qOpt = []
+const Folder = fs.readdirSync('./storage/quiz/')
+
+for (const file of Folder) {
+    if (!file.endsWith('.js')) continue
+    const quiz = require(`./storage/quiz/${file}`);
+
+    if (!quiz.isQuiz) continue
+    client.quizes.set(quiz.name, quiz);
+
+    qOpt.push({ name: quiz.longName, value: quiz.name })
+}
+client.commands.get('quiz').data.options[0].choices = qOpt
+
+
+//voicelines options
+const audioFolder = fs.readdirSync('./storage/audio/', { withFileTypes: true })
+const vc = []
+
+for (const file of audioFolder) {
+    filename = file.name.split('.').slice(0, -1).toString()
+    vc.push({ name: filename, value: filename })
+}
+client.commands.get('voice').data.options[0].choices = vc
+
 
 client.login(TOKEN);
