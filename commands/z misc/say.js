@@ -1,8 +1,10 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
+const name = 'say'
+const desc = 'Send messages as Obama!'
+
 module.exports = {
-    name: 'say',
-    description: 'Send messages as Obama! A non-slash command',
+    name: name, description: desc,
     aliases: ['s', 'msg', 'm'],
     emoji: '📨',
     example: 'hey Obama here',
@@ -10,10 +12,10 @@ module.exports = {
     guildOnly: true,
     permissions: '',
     masterOnly: false,
-    nonInt: true, //disabled
+    nonInt: true, //disabled due to bot 'replying' to the invoker
 	data: new SlashCommandBuilder()
-		.setName('say')
-		.setDescription('Send messages as Obama')
+		.setName(name)
+		.setDescription(desc)
 		.addStringOption(option => option.setName('message').setDescription('Message to send as Obama in the current channel').setRequired(true)),
 
     execute(message, args, client){

@@ -1,9 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageSelectMenu, MessageActionRow } = require('discord.js');
 
+const name = 'quiz'
+const desc = 'Lets you play a few quizes!'
+
 module.exports = {
-    name: 'quiz',
-    description: 'Lets you play a few quizes!',
+    name: name, description: desc,
     aliases: ['q'],
     usage: '<quiz name>',
     emoji: '🤔',
@@ -11,12 +13,10 @@ module.exports = {
     guildOnly: false,
     masterOnly: false,
     data: new SlashCommandBuilder()
-        .setName('quiz')
-        .setDescription('Lets you play a few quizes!')
-        .addStringOption(option => option.setName('quiz-name')
+        .setName(name)
+        .setDescription(desc)
+        .addStringOption(option => option.setName('quiz-name') //dynamic choices as outlined in bot.js
             .setDescription('The name of a quiz to play')
-			.addChoice('MonkeValues', 'monke')  //non dynamic, too bad!
-			.addChoice('Political Compass', 'pc')
         ),
 
     async execute(message, brug, client) {
@@ -32,33 +32,18 @@ module.exports = {
         } else { var args = brug.join(' ').toLowerCase() }
 
         
-        if (args != null && client.quizes.some(a => a.longName == args || a.name == args  && a.isQuiz == true)) {
-            const q = client.quizes.find(a => a.longName == args || a.name == args && a.isQuiz == true)
+        if (args != null && client.quizes.some(a => a.longName.toLowerCase() == args || a.name == args  && a.isQuiz == true)) {
+            const q = client.quizes.find(a => a.longName.toLowerCase() == args || a.name == args && a.isQuiz == true)
             //message.reply({ content: `Starting \`${q.longName}\` quiz...`, allowedMentions: { repliedUser: false } });
             return q.execute(message, message.author);
         }
 
-        var msg = await message.reply({
+        await message.reply({
             content: 'Select the quiz you want to play from the menu!\n',
             components: [BuildAMenu()],
             ephemeral: false,
-            fetchReply: true,
             allowedMentions: { repliedUser: false }
         });
-
-/*
-        var collector = msg.createMessageComponentCollector({ componentType: 'SELECT_MENU', idle: 60000 * 10, errors: ['idle'] })
-
-        collector.on('collect', async (menu) => {
-            await menu.deferUpdate();
-            client.quizes.get(menu.values[0]).execute(message, menu.user)
-        });
-
-        collector.on('end', (menu, reason) => {
-            if (reason != 'idle') return
-            msg.edit({ content: 'Use my \`quiz\` command to play a quiz!', components: [] })
-        })
-    */
 
         function BuildAMenu() {
 
@@ -67,9 +52,7 @@ module.exports = {
                 .setPlaceholder('Select a quiz to play!')
                 .setMaxValues(1);
 
-            const files3 = client.quizes.filter(quiz => quiz.isQuiz === true);
-
-            files3.forEach(c => {
+            client.quizes.forEach(c => {
                 var longDesc = c.description;
                 if (c.author) { var longDesc = `${c.description} by ${c.author}` }
 

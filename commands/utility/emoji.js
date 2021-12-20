@@ -18,18 +18,14 @@ module.exports = {
         if (args[0] === 'list' || !args.length) {
             const guildName = message.guild.name
             var emojiMapping = message.guild.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => `${e.toString()} - ${e.name}\n`).join("")
+            
             if (!emojiMapping) { var emojiMapping = `Nothing here yet :(\n` }
-            const emojiList = `Here are the available animated emojis from \`${guildName}\`:\n\n` +
-                emojiMapping + `\nProper usage: \`${prefix}e <s/t> [emoji name(s)]\` \nYou can add more emojis by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
-            message.author.send({ content: emojiList.toString(), split: true });
-            return message.delete()
-        }
-
-        if (args[0] === 'all') {
-            const emojiList = `Here are all the available animated emojis:\n\n` +
-                client.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => `${e.toString()} - ${e.name} \n`).join("") +
-                `\n\nYou can more by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
-            message.author.send({ content: emojiList.toString(), split: true });
+            const emojiList = `Here are the available animated emojis from \`${guildName}\`:\n\n` + emojiMapping
+            const emojiEnd = `\nProper usage: \`${prefix}e <s/t> [emoji name(s)]\` \nYou can add more emojis by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
+            
+            message.author.send({ content: emojiList.toString(), split: true })
+                .then( () => message.author.send({ content: emojiEnd, split: true }))
+            
             return message.delete()
         }
 
@@ -45,10 +41,13 @@ module.exports = {
 
                     const reactionEmoji = client.emojis.cache.find(e => e.name === args[i])
 
+                    
                     if (argAlias.indexOf(args[0]) > -1) {
                         emojidata.push(reactionEmoji.toString())
+                            .catch( error => {})
                     } else {
-                        previousMessage.react(reactionEmoji);
+                        previousMessage.react(reactionEmoji)
+                        .catch( error => {})
                     }
                 }
             }).then(array => {
