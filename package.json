@@ -1,6 +1,6 @@
 {
   "name": "ObamaBot",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "My Bot on discordjs",
   "main": "bot.js",
   "engines": {
