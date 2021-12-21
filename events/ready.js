@@ -10,8 +10,7 @@ module.exports = {
                 logger.info(`Ready! Logged in as ${client.user.tag}`)
                 console.log('-------------------------------');
 
-                client.user.setPresence({ activity: { name: ACTIVITY, type: ACTIVITY_TYPE }, status: STATUS })
-                        .then(console.log)
-                        .catch(console.error);
+                presence = client.user.setPresence({ activities: [{ name: ACTIVITY, type: ACTIVITY_TYPE }], status: STATUS });
+                console.log(presence)
         },
 };

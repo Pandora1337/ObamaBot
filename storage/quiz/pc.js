@@ -1,8 +1,7 @@
 const Math = require('mathjs');
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js')
 const questions = require('../../storage/quiz/pcq.json')
 const result = require('../../storage/quiz/pcr.js')
-const disbut = require("discord-buttons");
 
 module.exports = {
     name: 'pc',
@@ -46,46 +45,52 @@ module.exports = {
         // Question initialization
 
         const qEmbed = new MessageEmbed()
+            .setAuthor(`${this.longName} - ${author.username}`)
             .addField('\u200b', '\u200b')
             .setFooter(`To answer, click on the button with your opinion on it`);
 
 
-        let b1 = new disbut.MessageButton()
+        let b1 = new MessageButton()
             .setLabel("Strongly Agree")
-            .setID("1")
-            .setStyle("green");
+            .setCustomId("1")
+            .setStyle("SUCCESS");
 
-        let b2 = new disbut.MessageButton()
+        let b2 = new MessageButton()
             .setLabel("Agree")
-            .setID("0.5")
-            .setStyle("green");
+            .setCustomId("0.5")
+            .setStyle("SUCCESS");
 
-        let b3 = new disbut.MessageButton()
+        let b3 = new MessageButton()
             .setLabel("Neutral/Unsure")
-            .setID("0")
-            .setStyle("grey");
+            .setCustomId("0")
+            .setStyle("SECONDARY");
 
-        let b4 = new disbut.MessageButton()
+        let b4 = new MessageButton()
             .setLabel("Disagree")
-            .setID("-0.5")
-            .setStyle("red");
+            .setCustomId("-0.5")
+            .setStyle("DANGER");
 
-        let b5 = new disbut.MessageButton()
+        let b5 = new MessageButton()
             .setLabel("Strongly Disagree")
-            .setID("-1")
-            .setStyle("red");
+            .setCustomId("-1")
+            .setStyle("DANGER");
 
-        var back = new disbut.MessageButton()
+        var back = new MessageButton()
             .setLabel("Previous Question")
-            .setID("bacc")
-            .setStyle("blurple")
+            .setCustomId("bacc")
+            .setStyle("PRIMARY")
             .setDisabled(true);
 
-        var row1 = new disbut.MessageActionRow()
-            .addComponents(b1, b2, b3, b4, b5);
+        var row1 = new MessageActionRow()
+            .addComponents([b1, b2, b3, b4, b5]);
 
 
-        var msg = await message.channel.send(qEmbed, row1)
+        var msg = await message.reply({
+            embeds: [qEmbed],
+            components: [row1],
+            fetchReply: true,
+            allowedMentions: { repliedUser: false }
+        }) //
 
         await init_question()
 
@@ -101,39 +106,37 @@ module.exports = {
         function init_question() {
             if (qn == 0) { back.setDisabled(true) }
 
-            var row2 = new disbut.MessageActionRow()
-                .addComponent(back);
+            var row2 = new MessageActionRow()
+                .addComponents([back]);
 
             const exampleEmbed = new MessageEmbed(qEmbed)
                 .setTitle(`Question ${qn + 1} of ${questions.length}`)
                 .setDescription(questions[qn].question)
                 .setColor(random_col());
 
-            msg.edit(exampleEmbed, { components: [row1, row2] })
+            msg.edit({ embeds: [exampleEmbed], components: [row1, row2] })
         }
 
-        const filter = (b) => b.clicker.user.bot == false
-
-        const collector = msg.createButtonCollector(filter, { idle: 60000 * 20, errors: ['idle'] })
+        const collector = msg.createMessageComponentCollector({ idle: 60000 * 20, errors: ['idle'] })
 
         collector.on('collect', async (button) => {
-            if (button.clicker.user.id !== author.id) { return button.reply.send(`${button.clicker.user}, Someone else is doing this quiz!\nTry starting one yourself...`, true) }
-            if (button.id == 'bacc') { await prev_question(); return button.reply.defer() }
+            if (button.user.id != author.id) { return button.reply({content: `${button.user}, Someone else is doing this quiz!\nTry starting one yourself...`, ephemeral: true}) }
+            if (button.customId == 'bacc') { prev_question(); return button.deferUpdate() }
 
-            await next_question(button.id)
-            await button.reply.defer()
+            await next_question(button.customId)
+            await button.deferUpdate()
         });
 
         collector.on('end', (collection, reason) => {
             if (reason != 'idle') return
+            if (!msg) return
             const emptyEmbed = new MessageEmbed()
                 .setColor('#FF0000')
                 .setTitle('Quiz timed out!')
                 .setDescription('Try \`quiz\` command again!');
 
-            msg.edit(emptyEmbed, null)
+            msg.edit({ embeds: [emptyEmbed], components: [] })
         })
-        //}
 
 
         // Next question

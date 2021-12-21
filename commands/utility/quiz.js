@@ -1,54 +1,71 @@
-const { MessageMenuOption, MessageMenu } = require('discord-buttons');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageSelectMenu, MessageActionRow } = require('discord.js');
+
+const name = 'quiz'
+const desc = 'Lets you play a few quizes!'
 
 module.exports = {
-    name: 'quiz',
-    description: 'Lets you play a few quizes!',
+    name: name, description: desc,
     aliases: ['q'],
     usage: '<quiz name>',
     emoji: '🤔',
     args: false,
     guildOnly: false,
     masterOnly: false,
-    async execute(message, args, client) {
+    data: new SlashCommandBuilder()
+        .setName(name)
+        .setDescription(desc)
+        .addStringOption(option => option.setName('quiz-name') //dynamic choices as outlined in bot.js
+            .setDescription('The name of a quiz to play')
+        ),
 
-        //message.delete();
+    async execute(message, brug, client) {
 
-        const quizmenu = new MessageMenu()
-            .setID('quizmenu')
-            .setPlaceholder('Select a quiz to play!')
-            .setMaxValues(1);
+        if (message.type == 'APPLICATION_COMMAND') { // slash command conversion
+            message.author = message.user
+            var args = message.options.getString('quiz-name')
+            
+        } else if (message.type == 'MESSAGE_COMPONENT') { 
+            message.author = message.user
+            var args = brug
 
-        const files3 = client.quizes.filter(quiz => quiz.isQuiz === true);
+        } else { var args = brug.join(' ').toLowerCase() }
 
-        files3.forEach(c => {
+        
+        if (args != null && client.quizes.some(a => a.longName.toLowerCase() == args || a.name == args  && a.isQuiz == true)) {
+            const q = client.quizes.find(a => a.longName.toLowerCase() == args || a.name == args && a.isQuiz == true)
+            //message.reply({ content: `Starting \`${q.longName}\` quiz...`, allowedMentions: { repliedUser: false } });
+            return q.execute(message, message.author);
+        }
 
-            let option = new MessageMenuOption()
-                .setLabel(c.longName)
-                .setValue(c.name)
-                .setDescription(`${c.description}`);
-            if (c.emoji) { option.setEmoji(c.emoji) }
-            if (c.author) { option.setDescription(`${c.description} by ${c.author}`) }
-
-            quizmenu.addOptions(option)
-
+        await message.reply({
+            content: 'Select the quiz you want to play from the menu!\n',
+            components: [BuildAMenu()],
+            ephemeral: false,
+            allowedMentions: { repliedUser: false }
         });
 
-        if (client.quizes.some(a => a.name === args[0] == true && a.isQuiz == true)) return client.quizes.get(args[0]).execute(message, message.author);
-        else {var msg = await message.channel.send('Select the quiz you want to play from the menu!\n', quizmenu);}
+        function BuildAMenu() {
 
+            const quizmenu = new MessageSelectMenu()
+                .setCustomId('quizmenu')
+                .setPlaceholder('Select a quiz to play!')
+                .setMaxValues(1);
 
-        const filter = (b) => b.clicker.user.bot == false
+            client.quizes.forEach(c => {
+                var longDesc = c.description;
+                if (c.author) { var longDesc = `${c.description} by ${c.author}` }
 
-        var collector = msg.createMenuCollector(filter, { idle: 60000 * 10, errors: ['time'] })
-
-        collector.on('collect', async (menu) => {
-            await menu.reply.defer();
-            client.quizes.get(menu.values[0]).execute(message, menu.clicker.user)
-        });
-
-        collector.on('end', (menu, reason) => {
-            if (reason != 'idle') return
-            msg.edit('Use my \`quiz\` command to play a quiz!', null)
-        })
+                quizmenu.addOptions([
+                    {
+                        label: c.longName,
+                        description: longDesc,
+                        value: c.name,
+                        emoji: c.emoji,
+                    }
+                ])
+            });
+            return new MessageActionRow().addComponents(quizmenu)
+        }
     }
 }

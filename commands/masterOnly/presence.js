@@ -5,7 +5,7 @@ module.exports = {
     name: 'presence',
     description: 'Changes the presence activity of the bot',
     aliases: ['setstatus'],
-    usage: 'arg[0]\` sets activity type (WATCHING, PLAYING, LISTENING), \`arg[1+]\` sets the activity itself',
+    usage: 'arg[0]\` sets activity type (WATCHING, PLAYING, LISTENING, COMPETING), \`arg[1+]\` sets the activity itself',
     example: 'playing poker with buddies',
     args: true,
     guildOnly: false,
@@ -17,7 +17,7 @@ module.exports = {
         conf.ACTIVITY_TYPE = aType
         conf.ACTIVITY = a
 
-        client.user.setPresence({ activity: { name: a, type: aType }})
+        client.user.setPresence({ activities: [{ name: a, type: aType }]})
         fs.writeFile('./config.json', JSON.stringify(conf, null, 2), 'utf8', function writeJSON(err) {
             if (err) return console.log(err);
           });

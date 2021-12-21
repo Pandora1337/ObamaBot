@@ -3,8 +3,7 @@ const Discord = require('discord.js');
 const { TOKEN, botId } = require('./config.json');
 //const logger = require('./logger.js')
 
-const client = new Discord.Client();
-require("discord-buttons")(client);
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"], partials: ["CHANNEL"] });
 
 /*
 //top.gg + DBL updates
@@ -15,24 +14,12 @@ const DBL = require("./storage/DBLupdate.js")
 const tbl = new DBL.get(dblToken) //process.env.dblToken
 
 poster.on('posted', (stats) => { // ran when succesfully posted
-    logger.info(`Posted stats to Top.gg | ${stats.serverCount} servers`)
+    //logger.info(`Posted stats to Top.gg | ${stats.serverCount} servers`)
 
     memberCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
     tbl.post(client.guilds.cache.size, memberCount)
 })
 */
-
-//quizzes collection
-client.quizes = new Discord.Collection();
-
-const Folder = fs.readdirSync('./storage/quiz/')
-
-for (const file of Folder) {
-    if (file.endsWith('.js')) {
-        const quiz = require(`./storage/quiz/${file}`);
-        client.quizes.set(quiz.name, quiz);
-    }
-}
 
 //events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
@@ -49,7 +36,6 @@ for (const file of eventFiles) {
 
 //commands collection
 client.commands = new Discord.Collection();
-
 const commandFolders = fs.readdirSync('./commands');
 
 for (const folder of commandFolders) {
@@ -57,41 +43,36 @@ for (const folder of commandFolders) {
     for (const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
         client.commands.set(command.name, command);
-
-        //slashs commands
-        /*
-        if (!command.masterOnly) {
-            client.api.applications(botId).guilds('406570311555874818').commands.post({
-                data: {
-                    name: command.name,
-                    description: command.description
-                }
-            })
-        }
-        */
     }
 }
 
-/*
-client.api.applications(botId).guilds('406570311555874818').commands.post({
-    data: {
-        name: 'pingity',
-        description: 'ping pong!'
-    }
-})
-client.ws.on('INTERACTION_CREATE', async interaction => {
 
-    
-    client.api.interactions(interaction.id, interaction.token).callback.post({
-        data: {
-            type: 4,
-            data: {
-                content: 'hello world!'
-            }
-        }
-    })
+//quizzes collection & options
+client.quizes = new Discord.Collection();
+const qOpt = []
+const Folder = fs.readdirSync('./storage/quiz/')
 
-})
-*/
+for (const file of Folder) {
+    if (!file.endsWith('.js')) continue
+    const quiz = require(`./storage/quiz/${file}`);
+
+    if (!quiz.isQuiz) continue
+    client.quizes.set(quiz.name, quiz);
+
+    qOpt.push({ name: quiz.longName, value: quiz.name })
+}
+client.commands.get('quiz').data.options[0].choices = qOpt
+
+
+//voicelines options
+const audioFolder = fs.readdirSync('./storage/audio/', { withFileTypes: true })
+const vc = []
+
+for (const file of audioFolder) {
+    filename = file.name.split('.').slice(0, -1).toString()
+    vc.push({ name: filename, value: filename })
+}
+client.commands.get('voice').data.options[0].choices = vc
+
 
 client.login(TOKEN);

@@ -1,5 +1,5 @@
-const disbut = require("discord-buttons");
-const { MessageEmbed } = require("discord.js");
+//const disbut = require("discord-buttons");
+const { MessageEmbed, MessageButton } = require("discord.js");
 
 module.exports = {
     name: 'tic',
@@ -22,30 +22,30 @@ module.exports = {
         ];
 
         for (var i = 0; i < 3; i++) {
-            const b = new disbut.MessageButton().setLabel(" ").setStyle("grey");
-            const b1 = new disbut.MessageButton().setLabel(" ").setStyle("grey");
-            const b2 = new disbut.MessageButton().setLabel(" ").setStyle("grey");
+            const b = new MessageButton().setLabel(" ").setStyle("grey");
+            const b1 = new MessageButton().setLabel(" ").setStyle("grey");
+            const b2 = new MessageButton().setLabel(" ").setStyle("grey");
             tttGame[0][i] = b
             tttGame[1][i] = b1
             tttGame[2][i] = b2
         }
 
         function updateGrid() {
-            let r0 = new disbut.MessageActionRow().addComponents([
+            //let r0 = new MessageActionRow().addComponents([
                 tttGame[0][0].setID('0,0'),
                 tttGame[0][1].setID('0,1'),
                 tttGame[0][2].setID('0,2')
-            ])
-            let r1 = new disbut.MessageActionRow().addComponents([
+            //])
+            //let r1 = new MessageActionRow().addComponents([
                 tttGame[1][0].setID('1,0'),
                 tttGame[1][1].setID('1,1'),
                 tttGame[1][2].setID('1,2')
-            ])
-            let r2 = new disbut.MessageActionRow().addComponents([
+            //])
+            //let r2 = new MessageActionRow().addComponents([
                 tttGame[2][0].setID('2,0'),
                 tttGame[2][1].setID('2,1'),
                 tttGame[2][2].setID('2,2')
-            ])
+            //])
             return [r0, r1, r2]
         }
 
@@ -91,16 +91,16 @@ module.exports = {
             if (xturn && player == players[0]) {
                 xturn = false;
                 button.reply.defer()
-                return newButton = new disbut.MessageButton().setLabel("X").setStyle("red").setDisabled(true);
+                return newButton = new MessageButton().setLabel("X").setStyle("red").setDisabled(true);
             }
             if (!xturn && player == players[1]) {
                 xturn = true;
                 button.reply.defer()
-                return newButton = new disbut.MessageButton().setLabel("O").setStyle("green").setDisabled(true);
+                return newButton = new MessageButton().setLabel("O").setStyle("green").setDisabled(true);
             }
 
             button.reply.send('It\`s not your turn yet!', true);
-            return newButton = new disbut.MessageButton().setLabel(" ").setStyle("grey");
+            return newButton = new MessageButton().setLabel(" ").setStyle("grey");
         }
 
         function getUserFromMention(mention) {
@@ -179,19 +179,19 @@ msg.edit(emptyEmbed, null)
 
 
 function updateGrid() {
-var r0 = new disbut.MessageActionRow().addComponents([
-    new disbut.MessageButton().setID('0,0').setLabel(tttGame[0][0]).setStyle("grey"),
-    new disbut.MessageButton().setID('0,1').setLabel(tttGame[0][1]).setStyle("grey"),
-    new disbut.MessageButton().setID('0,2').setLabel(tttGame[0][2]).setStyle("grey")
+var r0 = new MessageActionRow().addComponents([
+    new MessageButton().setID('0,0').setLabel(tttGame[0][0]).setStyle("grey"),
+    new MessageButton().setID('0,1').setLabel(tttGame[0][1]).setStyle("grey"),
+    new MessageButton().setID('0,2').setLabel(tttGame[0][2]).setStyle("grey")
 ])
-var r1 = new disbut.MessageActionRow().addComponents([
-    new disbut.MessageButton().setID('1,0').setLabel(tttGame[1][0]).setStyle("grey"),
-    new disbut.MessageButton().setID('1,1').setLabel(tttGame[1][1]).setStyle("grey"),
-    new disbut.MessageButton().setID('1,2').setLabel(tttGame[1][2]).setStyle("grey")
+var r1 = new MessageActionRow().addComponents([
+    new MessageButton().setID('1,0').setLabel(tttGame[1][0]).setStyle("grey"),
+    new MessageButton().setID('1,1').setLabel(tttGame[1][1]).setStyle("grey"),
+    new MessageButton().setID('1,2').setLabel(tttGame[1][2]).setStyle("grey")
 ])
-var r2 = new disbut.MessageActionRow().addComponents([
-    new disbut.MessageButton().setID('2,0').setLabel(tttGame[2][0]).setStyle("grey"),
-    new disbut.MessageButton().setID('2,1').setLabel(tttGame[2][1]).setStyle("grey"),
-    new disbut.MessageButton().setID('2,2').setLabel(tttGame[2][2]).setStyle("grey")
+var r2 = new MessageActionRow().addComponents([
+    new MessageButton().setID('2,0').setLabel(tttGame[2][0]).setStyle("grey"),
+    new MessageButton().setID('2,1').setLabel(tttGame[2][1]).setStyle("grey"),
+    new MessageButton().setID('2,2').setLabel(tttGame[2][2]).setStyle("grey")
 ])
 return [r0, r1, r2]*/

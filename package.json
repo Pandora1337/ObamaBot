@@ -1,7 +1,12 @@
 {
   "name": "ObamaBot",
-  "version": "2.5.3",
+  "version": "3.0.0",
+  "description": "My Bot on discordjs",
   "main": "bot.js",
+  "engines": {
+    "node": "16.x",
+	"npm": "7.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
@@ -9,14 +14,16 @@
   "author": "Pandora1337 LTD.",
   "license": "ISC",
   "keywords": [],
-  "description": "",
   "dependencies": {
-    "@discordjs/opus": "^0.5.0",
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.6.0",
     "canvas": "^2.8.0",
-    "discord-buttons": "^4.0.0",
-    "discord.js": "^12.5.3",
+    "discord-api-types": "^0.22.0",
+    "discord.js": "^13.1.0",
     "ffmpeg-static": "^4.3.0",
     "fs": "0.0.1-security",
+    "libsodium-wrappers": "^0.7.9",
     "mathjs": "^9.3.2",
     "topgg-autoposter": "^2.0.0",
     "winston": "^3.3.3"
