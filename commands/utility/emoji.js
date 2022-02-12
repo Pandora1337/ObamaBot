@@ -1,5 +1,5 @@
 const argAlias = ['txt', 'text', 't', 'send', 's']
-const { prefix } = require('../../config.json')
+const { botName } = require('../../config.json')
 
 module.exports = {
     name: 'emoji',
@@ -21,7 +21,7 @@ module.exports = {
             
             if (!emojiMapping) { var emojiMapping = `Nothing here yet :(\n` }
             const emojiList = `Here are the available animated emojis from \`${guildName}\`:\n\n` + emojiMapping
-            const emojiEnd = `\nProper usage: \`${prefix}e <s/t> [emoji name(s)]\` \nYou can add more emojis by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
+            const emojiEnd = `\nProper usage: \`@${botName} e <s/t> [emoji name(s)]\` \nYou can add more emojis by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
             
             message.author.send({ content: emojiList.toString(), split: true })
                 .then( () => message.author.send({ content: emojiEnd, split: true }))
@@ -36,18 +36,17 @@ module.exports = {
                 let messages = Array.from(messageMappings.values());
                 const previousMessage = messages[1];
 
-                for (i = 0; i < 20; i++) { //(const emoji1 of args) //for all args, but alas the reaction limit is 20
-                    if (client.emojis.cache.some(e => e.name === args[i]) == false) continue
+                for (const arg of args ) { //(const emoji1 of args) //for all args, but alas the reaction limit is 20
+                    if (client.emojis.cache.some(e => e.name === arg) == false) continue
 
-                    const reactionEmoji = client.emojis.cache.find(e => e.name === args[i])
+                    const reactionEmoji = client.emojis.cache.find(e => e.name === arg)
 
                     
                     if (argAlias.indexOf(args[0]) > -1) {
                         emojidata.push(reactionEmoji.toString())
-                            .catch( error => {})
                     } else {
                         previousMessage.react(reactionEmoji)
-                        .catch( error => {})
+                            .catch( error => {})
                     }
                 }
             }).then(array => {
