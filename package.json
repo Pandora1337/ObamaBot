@@ -1,6 +1,6 @@
 {
   "name": "ObamaBot",
-  "version": "3.0.1",
+  "version": "3.0.5",
   "description": "My Bot on discordjs",
   "main": "bot.js",
   "engines": {
@@ -20,7 +20,7 @@
     "@discordjs/voice": "^0.6.0",
     "canvas": "^2.8.0",
     "discord-api-types": "^0.22.0",
-    "discord.js": "^13.1.0",
+    "discord.js": "^13.6.0",
     "ffmpeg-static": "^4.3.0",
     "fs": "0.0.1-security",
     "libsodium-wrappers": "^0.7.9",

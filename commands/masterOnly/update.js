@@ -1,6 +1,7 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { botId, TOKEN } = require('../../config.json');
+const { botId } = require('../../config.json');
+const { botToken } = require('../../bot.js')
 
 module.exports = {
 	name: 'update',
@@ -30,7 +31,7 @@ module.exports = {
 			slCommands.push(eSon)
 		});
 
-		const rest = new REST({ version: '9' }).setToken(TOKEN);
+		const rest = new REST({ version: '9' }).setToken(botToken);
 		
 
 		// de-registering commands

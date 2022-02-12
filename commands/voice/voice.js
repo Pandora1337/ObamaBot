@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { prefix } = require('../../config.json')
 const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { joinVoiceChannel, StreamType, createAudioResource, createAudioPlayer, VoiceConnectionStatus, AudioPlayerStatus } = require('@discordjs/voice');
@@ -55,7 +54,7 @@ module.exports = {
                 .setTitle('Here are the audio files you can play:')
                 .setDescription(files.join('\n'))
                 .setThumbnail('http://icons.iconarchive.com/icons/iconsmind/outline/512/Hipster-Headphones-icon.png')
-                .setFooter(`Proper usage:  ${prefix}v [audio file]  <optional voice channel>`);
+                .setFooter({ text: `Proper usage:  /v [audio file]  <optional voice channel>` });
 
             return embed
         }

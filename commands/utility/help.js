@@ -1,5 +1,5 @@
-const { prefix } = require('../../config.json');
 const logger = require('../../logger.js');
+const { botName } = require('../../config.json')
 const { MessageEmbed, MessageSelectMenu, MessageActionRow } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
@@ -58,7 +58,7 @@ module.exports = {
             .setTitle('Here\'s a list of my commands:')
             .setDescription(`${files.join('\n\n')}`)
             .setThumbnail('https://image.cnbcfm.com/api/v1/image/104656161-GettyImages-688156110.jpg?v=1532563778')
-            .setFooter(`btw, my prefix is ${prefix}`);
+            .setFooter({ text: `Use '/' for my commands, or @${botName} as a prefix` }); //, iconURL: 'https://i.imgur.com/AfFp7pu.png' });
         //  .setFooter(`You can send  ${prefix}help  [command name]  to get info on a specific command!`);
 
         var select = new MessageSelectMenu()
@@ -111,9 +111,9 @@ module.exports = {
 
             if (command.aliases) data.push(`**Short Name(s):** ${command.aliases.join(', ')}\n`);
             if (command.description) data.push(`**Description:** ${command.description}\n`);
-            if (command.usage) data.push(`**Usage:** \`${prefix}${command.name} ${command.usage}\`\n`);
+            if (command.usage) data.push(`**Usage:** \`/${command.name} ${command.usage}\`\n`);
             if (command.usageInt) data.push(`**Usage:** ${command.usageInt}\n`);
-            if (command.example) data.push(`**Example:** \`${prefix}${command.name} ${command.example}\`\n`);
+            if (command.example) data.push(`**Example:** \`/${command.name} ${command.example}\`\n`);
 
             const helpCommand = new MessageEmbed()
                 .setColor('#ebc83d')
