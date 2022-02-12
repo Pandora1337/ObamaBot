@@ -3,9 +3,8 @@ logs/
 .archive/
 .eslintrc.json
 package-lock.json
-config.json
 configLive.json
 configPublic.json
-
+token.json
 
 
