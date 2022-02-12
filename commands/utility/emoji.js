@@ -1,5 +1,5 @@
 const argAlias = ['txt', 'text', 't', 'send', 's']
-const { prefix } = require('../../config.json')
+const { botName } = require('../../config.json')
 
 module.exports = {
     name: 'emoji',
@@ -18,18 +18,14 @@ module.exports = {
         if (args[0] === 'list' || !args.length) {
             const guildName = message.guild.name
             var emojiMapping = message.guild.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => `${e.toString()} - ${e.name}\n`).join("")
+            
             if (!emojiMapping) { var emojiMapping = `Nothing here yet :(\n` }
-            const emojiList = `Here are the available animated emojis from \`${guildName}\`:\n\n` +
-                emojiMapping + `\nProper usage: \`${prefix}e <s/t> [emoji name(s)]\` \nYou can add more emojis by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
-            message.author.send({ content: emojiList.toString(), split: true });
-            return message.delete()
-        }
-
-        if (args[0] === 'all') {
-            const emojiList = `Here are all the available animated emojis:\n\n` +
-                client.emojis.cache.filter(e => e.animated === true && e.available === true).map(e => `${e.toString()} - ${e.name} \n`).join("") +
-                `\n\nYou can more by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
-            message.author.send({ content: emojiList.toString(), split: true });
+            const emojiList = `Here are the available animated emojis from \`${guildName}\`:\n\n` + emojiMapping
+            const emojiEnd = `\nProper usage: \`@${botName} e <s/t> [emoji name(s)]\` \nYou can add more emojis by going to the Server Settings => Emoji => Upload Emoji and choose one that ends with \`.gif\`. You dont need Nitro for this!`;
+            
+            message.author.send({ content: emojiList.toString(), split: true })
+                .then( () => message.author.send({ content: emojiEnd, split: true }))
+            
             return message.delete()
         }
 
@@ -40,21 +36,22 @@ module.exports = {
                 let messages = Array.from(messageMappings.values());
                 const previousMessage = messages[1];
 
-                for (i = 0; i < 20; i++) { //(const emoji1 of args) //for all args, but alas the reaction limit is 20
-                    if (client.emojis.cache.some(e => e.name === args[i]) == false) continue
+                for (const arg of args ) { //(const emoji1 of args) //for all args, but alas the reaction limit is 20
+                    if (client.emojis.cache.some(e => e.name === arg) == false) continue
 
-                    const reactionEmoji = client.emojis.cache.find(e => e.name === args[i])
+                    const reactionEmoji = client.emojis.cache.find(e => e.name === arg)
 
+                    
                     if (argAlias.indexOf(args[0]) > -1) {
                         emojidata.push(reactionEmoji.toString())
                     } else {
                         previousMessage.react(reactionEmoji)
+                            .catch( error => {})
                     }
                 }
             }).then(array => {
                 if (argAlias.indexOf(args[0]) > -1) {
                     message.channel.send({ content: emojidata.join(' ').toString(), split: true })
-                            .catch( error => {})
                 }
             })
             .catch()

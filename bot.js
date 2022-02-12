@@ -9,6 +9,8 @@ const topToken = process.env.topToken;
 const dblToken = process.env.dblToken;
 const botToken = process.env.dupersecret;
 
+module.exports = {botToken}
+
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"], partials: ["CHANNEL"] });
 
 

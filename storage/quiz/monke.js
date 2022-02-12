@@ -24,9 +24,9 @@ module.exports = {
         var prev_answer = null;
 
         const qEmbed = new MessageEmbed()
-            .setAuthor(`${this.longName} - ${author.username}`)
+            .setAuthor({ name: `${this.longName} - ${author.username}`})
             .addField('\u200b', '\u200b')
-            .setFooter(`To answer, click on the button with your opinion on it`);
+            .setFooter({ text: `To answer, click on the button with your opinion on it` });
 
         let b1 = new MessageButton()
             .setLabel("Strongly Agree")

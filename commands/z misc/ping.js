@@ -1,6 +1,9 @@
+
+const name = 'ping'
+const desc = 'Ping!'
+
 module.exports = {
-    name: 'ping',
-    description: 'Ping!',
+    name: name, description: desc,
     aliases: [''],
     usage: ' ',
     example: '',
@@ -9,6 +12,7 @@ module.exports = {
     guildOnly: false,
     permissions: '',
     masterOnly: false,
+    nonInt: false,
     execute(message, args, client) {
         message.reply({content: `--------------pong!--------------\nWebsocket heartbeat: ${client.ws.ping}ms.`, allowedMentions: { repliedUser: false } });
         message.channel.send(`Checking roundtrip...`)

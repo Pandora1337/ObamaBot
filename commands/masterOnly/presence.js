@@ -5,7 +5,7 @@ module.exports = {
     name: 'presence',
     description: 'Changes the presence activity of the bot',
     aliases: ['setstatus'],
-    usage: 'arg[0]\` sets activity type (WATCHING, PLAYING, LISTENING), \`arg[1+]\` sets the activity itself',
+    usage: 'arg[0]\` sets activity type (WATCHING, PLAYING, LISTENING, COMPETING), \`arg[1+]\` sets the activity itself',
     example: 'playing poker with buddies',
     args: true,
     guildOnly: false,

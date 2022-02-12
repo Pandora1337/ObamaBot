@@ -1,10 +1,9 @@
-//javascript
 const { MessageSelectMenu, MessageActionRow, MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'Animated Emoji',
-    aliases: ['animated emoji'],
     description: `React with animated emoji through a context menu!`,
+    aliases: ['animated emoji'],
     usageInt: 'Right click a message and select \`Apps\` => \`Animated Emoji\`',
     emoji: '<a:wobble:830931821704642621>',
     masterOnly: false,
@@ -55,6 +54,7 @@ module.exports = {
 
             message.reply({ embeds: [embed], components: [row], ephemeral: true })
         }
+
 
         function eReact(int, value) {
             let fileComponents = value.split('.');

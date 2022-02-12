@@ -1,8 +1,10 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
+const name = 'prune'
+const desc = 'Deletes a number of messages!'
+
 module.exports = {
-	name: 'prune',
-	description: 'Deletes a number of messages!',
+    name: name, description: desc,
 	aliases: ['p'],
 	usage: '[number of messages to delete]',
 	emoji: '✂️',
@@ -11,8 +13,8 @@ module.exports = {
 	permissions: 'MANAGE_MESSAGES',
 	masterOnly: false,
 	data: new SlashCommandBuilder()
-		.setName('prune')
-		.setDescription('Deletes a number of messages!')
+		.setName(name)
+		.setDescription(desc)
 		.addIntegerOption(option => option.setName('int').setDescription('The number of messages to delete').setRequired(true)),
 
 	execute(message, args) {
