@@ -1,3 +1,6 @@
+
+/////// DEPRECATED DUE TO NEW API LIMITATIONS (Lack of message.content without permissions)
+
 const { masterId } = require('../../config.json');
 const { MessageEmbed } = require('discord.js');
 
