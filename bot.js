@@ -1,7 +1,12 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { TOKEN, botId } = require('./config.json');
 //const logger = require('./logger.js')
+
+const topToken = process.env.topToken; 
+const dblToken = process.env.dblToken;
+const botToken = require('./token.json').botToken //process.env.dupersecret;
+
+module.exports = {botToken}
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"], partials: ["CHANNEL"] });
 
@@ -75,4 +80,4 @@ for (const file of audioFolder) {
 client.commands.get('voice').data.options[0].choices = vc
 
 
-client.login(TOKEN);
+client.login(botToken);
