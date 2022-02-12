@@ -3,7 +3,7 @@ const logger = require('../logger.js');
 
 module.exports = {
     name: 'messageCreate',
-    execute(message, client) {
+    async execute(message, client) {
 
         if (message.author.bot || !message.content) return
 
@@ -31,10 +31,9 @@ module.exports = {
 
         } else return
 
-        (async () => {
-            var args = proc[1].trim().split(/ +/);
-            var commandName = args.shift().toLowerCase();
-        })()
+
+        const args = await proc[1].trim().split(/ +/);
+        const commandName = await args.shift().toLowerCase();
 
         if (commandName == '') {
             return client.commands.get('help').execute(message, args, client);
