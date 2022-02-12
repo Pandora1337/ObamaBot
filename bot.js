@@ -5,15 +5,19 @@ const fs = require('fs');
 const Discord = require('discord.js');
 //const logger = require('./logger.js')
 
+const topToken = process.env.topToken; 
+const dblToken = process.env.dblToken;
+const botToken = process.env.dupersecret;
+
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES", "GUILD_VOICE_STATES"], partials: ["CHANNEL"] });
 
 
 //top.gg + DBL updates
 const { AutoPoster } = require("topgg-autoposter");
-const poster = new AutoPoster(process.env.topToken, client);
+const poster = new AutoPoster(topToken, client);
 
 const DBL = require("./storage/DBLupdate.js")
-const tbl = new DBL.get(process.env.dblToken)
+const tbl = new DBL.get(dblToken)
 
 poster.on('posted', (stats) => { // ran when succesfully posted
     //console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`)
@@ -74,4 +78,4 @@ for (const file of audioFolder) {
 client.commands.get('voice').data.options[0].choices = vc
 
 
-client.login(process.env.dupersecret);
+client.login(botToken);
