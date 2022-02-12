@@ -31,9 +31,10 @@ module.exports = {
 
         } else return
 
-
-        const args = proc[1].trim().split(/ +/);
-        const commandName = args.shift().toLowerCase();
+        (async () => {
+            var args = proc[1].trim().split(/ +/);
+            var commandName = args.shift().toLowerCase();
+        })()
 
         if (commandName == '') {
             return client.commands.get('help').execute(message, args, client);
