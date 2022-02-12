@@ -32,8 +32,7 @@ module.exports = {
         } else return
 
 
-        try { const args = proc[1].trim().split(/ +/) }
-        catch (error) {}
+        const args = proc[1].trim().split(/ +/);
         const commandName = args.shift().toLowerCase();
 
         if (commandName == '') {
