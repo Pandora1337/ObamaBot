@@ -4,8 +4,8 @@
   "description": "My Bot on discordjs",
   "main": "bot.js",
   "engines": {
-    "node": "16.14.0",
-	"npm": "8.x"
+    "node": "16.x",
+	"npm": "7.x"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

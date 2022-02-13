@@ -3,7 +3,7 @@ const logger = require('../logger.js');
 
 module.exports = {
     name: 'messageCreate',
-    execute(message, client) {
+    async execute(message, client) {
 
         if (message.author.bot || !message.content) return
 
@@ -24,16 +24,16 @@ module.exports = {
         //if ( !mesSent.includes(botMention1) || !mesSent.includes(botMention2) ) return
         if (mesSent.startsWith("<@")) {
             if (mesSent.startsWith("<@!")) {
-                var proc = mesSent.trim().split(botMention2)
+                var proc = await mesSent.trim().split(botMention2)
             } else {
-                var proc = mesSent.trim().split(botMention1)
+                var proc = await mesSent.trim().split(botMention1)
             }
 
         } else return
 
 
-        const args = proc[1].trim().split(/ +/);
-        const commandName = args.shift().toLowerCase();
+        const args = await proc[1].trim().split(/ +/);
+        const commandName = await args.shift().toLowerCase();
 
         if (commandName == '') {
             return client.commands.get('help').execute(message, args, client);
