@@ -32,7 +32,7 @@ module.exports = {
         } else return
 
 
-        const args = await proc[1].trim().split(/ +/);
+        const args = await proc[1].split(/ +/);
         const commandName = await args.shift().toLowerCase();
 
         if (commandName == '') {
