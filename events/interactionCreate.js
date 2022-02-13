@@ -4,7 +4,7 @@ module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
 
-		if (interaction.isSelectMenu() && interaction.customId.includes('menu')) { // == 'emojimenu') {
+		if ( interaction.isSelectMenu() && interaction.customId.includes('menu') ) { // == 'emojimenu') {
 			let commandComponent = interaction.customId.slice(0, -4)
 
 			try {
@@ -13,7 +13,6 @@ module.exports = {
 
 			} catch (error) { oops(error) }
 		}
-
 
 		const command = interaction.client.commands.get(interaction.commandName);
 

@@ -7,7 +7,6 @@ module.exports = {
 
         if (message.author.bot || !message.content) return
 
-        const mesSent = message.content.toLowerCase();
         //const args = mesSent.trim().split(/ +/);
         //var mention = args.shift()
         //const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -18,22 +17,21 @@ module.exports = {
         }
         */
 
+        const mesSent = message.content.toLowerCase();
+
         const botMention1 = `<@${botId}>`;
         const botMention2 = `<@!${botId}>`;
 
-        //if ( !mesSent.includes(botMention1) || !mesSent.includes(botMention2) ) return
-        if (mesSent.startsWith("<@")) {
-            if (mesSent.startsWith("<@!")) {
-                var proc = mesSent.trim().split(botMention2)
-            } else {
-                var proc = mesSent.trim().split(botMention1)
-            }
+             if ( mesSent.startsWith(botMention1) ) { var proc = mesSent.split(botMention1) }
+        else if ( mesSent.startsWith(botMention2) ) { var proc = mesSent.split(botMention2) }
+        else return
 
-        } else return
+        const args = proc[1].split(/ +/)
 
+        if ( args[0] == '' ) args.shift()
 
-        const args = proc[1].trim().split(/ +/)
-        const commandName = args.shift().toLowerCase();
+        const commandName = args.shift()
+        
 
         if (commandName == '') {
             return client.commands.get('help').execute(message, args, client);
