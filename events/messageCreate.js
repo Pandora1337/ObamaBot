@@ -24,9 +24,9 @@ module.exports = {
         //if ( !mesSent.includes(botMention1) || !mesSent.includes(botMention2) ) return
         if (mesSent.startsWith("<@")) {
             if (mesSent.startsWith("<@!")) {
-                var proc = mesSent.trim().split(botMention2)
+                var proc = await mesSent.trim().split(botMention2)
             } else {
-                var proc = mesSent.trim().split(botMention1)
+                var proc = await mesSent.trim().split(botMention1)
             }
 
         } else return
