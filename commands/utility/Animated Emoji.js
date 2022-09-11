@@ -27,7 +27,7 @@ module.exports = {
                 .setTitle('Animated Emoji Selector')
                 .setDescription('You can click the menu multiple times!')
                 //.setThumbnail('http://icons.iconarchive.com/icons/iconsmind/outline/512/Hipster-Headphones-icon.png')
-                .setFooter(`Add more .gif emojis through server settings! No Nitro needed!`);
+                .setFooter({ text: `Add more .gif emojis through server settings! No Nitro needed!` });
 
             if (message.guild.me.displayHexColor != '#000000') { embed.setColor(message.guild.me.displayHexColor) }
 
